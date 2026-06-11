@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "title": "灯光设计用户旅程地图展示数据",
+  "packages": [
+    {
+      "name": "戚日莲",
+      "url": "./data/evidence-packages/qi-rilian.zip"
+    },
+    {
+      "name": "谢珊珊",
+      "url": "./data/evidence-packages/xie-shanshan.zip"
+    },
+    {
+      "name": "李娜",
+      "url": "./data/evidence-packages/li-na.zip"
+    }
+  ]
+}

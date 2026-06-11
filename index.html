@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>灯光设计用户旅程地图填写器</title>
+    <link rel="stylesheet" href="./assets/theme.css">
+    <link rel="stylesheet" href="./assets/app.css">
+  </head>
+  <body data-page="collector">
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="灯光设计用户旅程地图填写器">
+        <span class="brand-mark"></span>
+        <span>Lighting Journey</span>
+      </a>
+      <nav class="top-actions" aria-label="页面操作">
+        <a class="ghost-button" href="./dashboard.html">打开展示页</a>
+        <button class="ghost-button save-button" id="manualSaveButton" type="button">保存</button>
+        <button class="dark-button" id="exportJsonButton" type="button">导出 JSON</button>
+      </nav>
+    </header>
+
+    <main class="collector-shell">
+      <section class="intro-block" aria-labelledby="page-title">
+        <p class="eyebrow">User Journey Collector</p>
+        <h1 id="page-title">灯光设计线上服务用户旅程地图填写器</h1>
+        <p class="lead">像问卷一样填写真实体验。每个阶段只要写清楚做了什么、怎么想、卡在哪里，再拖一下情绪点，系统会自动生成可汇报的旅程地图数据。</p>
+      </section>
+
+      <section class="workspace-grid" aria-label="填写工作区">
+        <aside class="side-panel">
+          <section class="person-profile-card" aria-labelledby="personProfileTitle">
+            <div class="person-profile-heading">
+              <div>
+                <p class="eyebrow">Sample Profile</p>
+                <h2 id="personProfileTitle">填写人信息</h2>
+              </div>
+              <span id="sampleIdentity" class="sample-identity">当前样本</span>
+            </div>
+            <label class="field-group compact" for="personNameInput">
+              <span>填写人姓名</span>
+              <input id="personNameInput" type="text" placeholder="请输入填写人姓名">
+            </label>
+            <label class="field-group compact" for="experienceDate">
+              <span>体验日期</span>
+              <input id="experienceDate" type="date">
+            </label>
+            <label class="field-group compact" for="sampleType">
+              <span>样本类型</span>
+              <select id="sampleType">
+                <option value="内部体验者">内部体验者</option>
+                <option value="真实客户">真实客户</option>
+                <option value="灯光设计师视角">灯光设计师视角</option>
+                <option value="新手用户">新手用户</option>
+                <option value="其他">其他</option>
+              </select>
+            </label>
+            <label class="field-group compact" for="personaRole">
+              <span>体验身份</span>
+              <input id="personaRole" type="text" placeholder="例如：准备装修的新手用户">
+            </label>
+            <label class="field-group compact" for="sampleTags">
+              <span>备注标签</span>
+              <input id="sampleTags" type="text" placeholder="例如：第1轮体验、618阶段">
+            </label>
+            <div class="person-profile-actions">
+              <button class="primary-button small-button" id="saveProfileButton" type="button">保存修改</button>
+              <button class="ghost-button small-button" id="addPersonButton" type="button">+ 新增一份体验</button>
+              <button class="ghost-button small-button" id="openSamplesButton" type="button">打开已有填写人</button>
+            </div>
+          </section>
+
+          <div class="progress-block">
+            <div class="progress-copy">
+              <span>完成进度</span>
+              <strong id="progressText">0 / 9</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span id="progressBar"></span>
+            </div>
+            <div class="progress-lights" id="progressLights" aria-hidden="true"></div>
+            <p class="completion-hint" id="completionHint">沿着 9 个阶段，把真实体验一点点点亮。</p>
+          </div>
+
+          <nav class="stage-nav" id="stageNav" aria-label="旅程阶段"></nav>
+        </aside>
+
+        <section class="form-panel" aria-live="polite">
+          <div class="stage-heading">
+            <div>
+              <p class="eyebrow" id="stageEyebrow">Stage 01</p>
+              <h2 id="stageTitle"></h2>
+              <p id="stageDescription"></p>
+            </div>
+            <button class="ghost-button" id="fillPendingButton" type="button">一键填写暂无</button>
+          </div>
+
+          <form id="stageForm" class="stage-form">
+            <fieldset class="segmented" aria-labelledby="statusLegend">
+              <legend id="statusLegend">这个阶段是否已体验</legend>
+              <label><input type="radio" name="status" value="已体验"> <span>已体验</span></label>
+              <label><input type="radio" name="status" value="暂未体验"> <span>暂未体验</span></label>
+              <label><input type="radio" name="status" value="跳过"> <span>跳过</span></label>
+            </fieldset>
+
+            <div class="form-grid">
+              <label class="field-group">
+                <span>用户目标</span>
+                <textarea name="goal" rows="3" placeholder="这一阶段你想完成什么？"></textarea>
+              </label>
+              <label class="field-group">
+                <span>关键行为</span>
+                <textarea name="actions" rows="3" placeholder="你实际做了哪些动作？例如咨询客服、提交户型图、确认预算。"></textarea>
+              </label>
+              <label class="field-group wide">
+                <span>真实想法</span>
+                <textarea name="thoughts" rows="3" placeholder="请写当时脑子里的真实想法，不用写漂亮。"></textarea>
+              </label>
+            </div>
+
+            <fieldset class="touchpoint-field">
+              <legend>接触点</legend>
+              <div class="chip-grid" id="touchpointGrid"></div>
+            </fieldset>
+
+            <section class="emotion-editor" aria-labelledby="emotionTitle">
+              <div>
+                <p class="eyebrow">Emotion Score</p>
+                <h3 id="emotionTitle">情绪值</h3>
+                <p class="muted-copy">拖动滑杆，系统会自动生成 emoji 和默认情绪文字。</p>
+              </div>
+              <div class="emotion-control">
+                <output id="emotionEmoji" class="emoji-output">😐</output>
+                <div class="slider-wrap">
+                  <input id="emotionScore" name="emotionScore" type="range" min="-3" max="3" step="1">
+                  <div class="slider-scale" aria-hidden="true">
+                    <span>-3</span><span>-2</span><span>-1</span><span>0</span><span>+1</span><span>+2</span><span>+3</span>
+                  </div>
+                </div>
+                <strong id="emotionLabel">无明显感受</strong>
+              </div>
+            </section>
+
+            <div class="form-grid">
+              <label class="field-group">
+                <span>情绪原因</span>
+                <textarea name="emotionReason" rows="3" placeholder="为什么这里是这个情绪？"></textarea>
+              </label>
+              <fieldset class="severity-field">
+                <legend>痛点严重程度</legend>
+                <label><input type="radio" name="painSeverity" value="没有"> <span>没有</span></label>
+                <label><input type="radio" name="painSeverity" value="轻微"> <span>轻微</span></label>
+                <label><input type="radio" name="painSeverity" value="明显"> <span>明显</span></label>
+                <label><input type="radio" name="painSeverity" value="严重"> <span>严重</span></label>
+              </fieldset>
+              <label class="field-group">
+                <span>具体痛点</span>
+                <textarea name="painPoint" rows="4" placeholder="哪里没看懂？哪里卡住？哪里需要反复问？如果是真实用户会不会中断？"></textarea>
+              </label>
+              <label class="field-group">
+                <span>机会点</span>
+                <textarea name="opportunity" rows="4" placeholder="可以怎么优化？例如话术、页面说明、资料清单、案例图、流程提醒。"></textarea>
+              </label>
+              <label class="field-group">
+                <span>内容机会</span>
+                <textarea name="contentOpportunity" rows="4" placeholder="这一阶段可以延伸出什么小红书内容选题？"></textarea>
+              </label>
+              <div class="field-group evidence-field">
+                <span>证据</span>
+                <textarea name="evidenceText" rows="4" placeholder="可粘贴聊天记录关键句、截图里的关键信息或文件节点。"></textarea>
+                <div class="evidence-dropzone" id="evidenceDropzone" role="button" tabindex="0" aria-label="上传证据附件">
+                  <input id="evidenceFileInput" type="file" multiple accept="image/*,.png,.jpg,.jpeg,.webp,.pdf,.dwg,.dxf,.xlsx,.xls,.csv,.zip,.doc,.docx,.txt">
+                  <strong>拖入截图、点位图或交付文件</strong>
+                  <span>也可以点击选择。源文件会保存在本机文件仓库，JSON 只保留轻量信息。</span>
+                </div>
+                <div id="evidenceAttachmentList" class="evidence-attachment-list" aria-live="polite"></div>
+              </div>
+            </div>
+          </form>
+
+          <div class="form-actions">
+            <button class="ghost-button" id="prevButton" type="button">上一阶段</button>
+            <button class="primary-button" id="nextButton" type="button">下一阶段</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="curve-panel" aria-labelledby="curveTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Live Preview</p>
+            <h2 id="curveTitle">实时情绪曲线</h2>
+          </div>
+          <p id="autosaveStatus">已自动保存</p>
+        </div>
+        <div id="curvePreview" class="curve-preview"></div>
+      </section>
+    </main>
+
+    <dialog id="exportDialog" class="export-dialog">
+      <form method="dialog">
+        <h2>导出前检查</h2>
+        <p id="exportMessage"></p>
+        <div id="exportSummary" class="export-summary"></div>
+        <div id="missingList" class="missing-list"></div>
+        <div class="dialog-actions">
+          <button class="ghost-button" value="cancel">返回修改</button>
+          <button class="ghost-button" id="confirmExportZipButton" value="default" type="button">下载证据包 ZIP</button>
+          <button class="dark-button" id="confirmExportButton" value="default" type="button">下载 JSON</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="personDialog" class="export-dialog person-dialog">
+      <form method="dialog">
+        <h2>新增一份体验</h2>
+        <p class="muted-copy">旅程阶段仍然固定 9 个；这里新增的是填写人和样本信息，方便后续做多人汇总。</p>
+        <label class="field-group">
+          <span>姓名</span>
+          <input id="newPersonName" type="text" placeholder="例如：真实客户 A">
+        </label>
+        <label class="field-group">
+          <span>体验身份</span>
+          <input id="newPersonaRole" type="text" placeholder="例如：准备装修的新手用户">
+        </label>
+        <label class="field-group">
+          <span>体验日期</span>
+          <input id="newExperienceDate" type="date">
+        </label>
+        <label class="field-group">
+          <span>样本类型</span>
+          <select id="newSampleType">
+            <option value="内部体验者">内部体验者</option>
+            <option value="真实客户">真实客户</option>
+            <option value="灯光设计师视角">灯光设计师视角</option>
+            <option value="新手用户">新手用户</option>
+            <option value="其他">其他</option>
+          </select>
+        </label>
+        <label class="field-group">
+          <span>备注标签</span>
+          <input id="newSampleTags" type="text" placeholder="例如：第1轮体验、内部测试">
+        </label>
+        <div class="dialog-actions">
+          <button class="ghost-button" value="cancel">取消</button>
+          <button class="dark-button" id="confirmAddPersonButton" value="default" type="button">创建体验</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="sampleDialog" class="export-dialog sample-dialog">
+      <form method="dialog">
+        <div class="sample-dialog-heading">
+          <div>
+            <h2>打开已有填写人</h2>
+            <p class="muted-copy">这里打开的是完整旅程样本，不是筛选。数据仍按 journeyId 绑定，姓名可以之后再改。</p>
+          </div>
+          <button class="ghost-button small-button" value="cancel">关闭</button>
+        </div>
+        <div id="sampleList" class="sample-list" aria-live="polite"></div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="./assets/vendor/jszip.min.js" defer></script>
+    <script src="./assets/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>灯光设计用户旅程地图展示页</title>
+    <link rel="stylesheet" href="./assets/theme.css">
+    <link rel="stylesheet" href="./assets/app.css">
+  </head>
+  <body data-page="dashboard">
+    <header class="topbar">
+      <a class="brand" href="./dashboard.html" aria-label="灯光设计用户旅程地图展示页">
+        <span class="brand-mark"></span>
+        <span>Journey Dashboard</span>
+      </a>
+      <nav class="top-actions" aria-label="页面操作">
+        <a class="ghost-button" href="./index.html">返回填写器</a>
+        <button class="ghost-button" id="printButton" type="button">打印 PDF</button>
+        <button class="dark-button" id="exportPngButton" type="button">导出 PNG</button>
+      </nav>
+    </header>
+
+    <main class="dashboard-shell">
+      <section class="intro-block" aria-labelledby="page-title">
+        <p class="eyebrow">Journey Map Report</p>
+        <h1 id="page-title">个人与多人汇总旅程地图</h1>
+        <p class="lead">导入组员导出的 JSON 或完整证据包 ZIP，即可生成个人旅程地图和汇总洞察。页面会自动提炼情绪低谷、共同痛点、内容机会和 SOP 优化方向。</p>
+      </section>
+
+      <section class="import-panel" aria-label="导入数据">
+        <div class="import-header">
+          <div>
+            <h2>导入 JSON / 证据包 ZIP</h2>
+            <p>可连续选择多份个人 JSON 或完整证据包 ZIP，也可以读取当前浏览器里已自动保存的填写数据。</p>
+          </div>
+          <fieldset class="import-mode" aria-label="导入模式">
+            <label><input type="radio" name="importMode" value="append" checked> <span>追加到当前数据</span></label>
+            <label><input type="radio" name="importMode" value="replace"> <span>替换当前数据</span></label>
+          </fieldset>
+        </div>
+
+        <div class="import-actions">
+          <label class="file-button">
+            <input id="jsonInput" type="file" accept=".json,.zip,application/json,application/zip" multiple>
+            <span>选择 JSON / 证据包 ZIP</span>
+          </label>
+          <button class="ghost-button" id="loadLocalButton" type="button">读取缓存</button>
+          <button class="ghost-button" id="clearCurrentButton" type="button">清空展示</button>
+          <button class="ghost-button danger-subtle" id="clearDraftCacheButton" type="button">清空填写缓存</button>
+          <button class="ghost-button danger-subtle" id="clearAllLocalButton" type="button">清空全部缓存</button>
+          <button class="ghost-button" id="exportCsvButton" type="button">导出 CSV</button>
+        </div>
+
+        <div id="sessionRestoreNotice" class="session-restore-notice" hidden>
+          <div>
+            <span>已恢复上次导入</span>
+            <p id="restoredSampleNames">暂无数据</p>
+          </div>
+          <button class="ghost-button" id="clearRestoredButton" type="button">清空后重新导入</button>
+        </div>
+
+        <div class="imported-panel" aria-label="已导入数据">
+          <span>已导入样本：</span>
+          <p id="importedSummary">暂无数据</p>
+          <div id="importedList" class="imported-list"></div>
+        </div>
+      </section>
+
+      <section class="filter-panel" aria-label="样本筛选">
+        <div class="field-group compact">
+          <label for="sampleTypeFilter">样本类型</label>
+          <select id="sampleTypeFilter">
+            <option value="全部">全部</option>
+          </select>
+        </div>
+        <div class="field-group compact">
+          <label for="dateFilter">体验日期</label>
+          <select id="dateFilter">
+            <option value="全部">全部</option>
+            <option value="近7天">近7天</option>
+            <option value="近30天">近30天</option>
+          </select>
+        </div>
+        <div class="field-group compact">
+          <label for="tagFilter">标签</label>
+          <select id="tagFilter">
+            <option value="全部">全部</option>
+          </select>
+        </div>
+        <div class="field-group compact">
+          <label for="completionFilter">填写完整度</label>
+          <select id="completionFilter">
+            <option value="全部">全部</option>
+            <option value="完整">只看完整填写</option>
+            <option value="未完整">只看未完整填写</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="report-tabs" aria-label="报告切换">
+        <button class="tab-button active" data-view="summary" type="button">多人汇总</button>
+        <button class="tab-button" data-view="individual" type="button">个人地图</button>
+      </section>
+
+      <section id="reportSurface" class="report-surface" aria-live="polite">
+        <div class="empty-state">
+          <p class="eyebrow">Waiting For Data</p>
+          <h2>还没有导入旅程数据</h2>
+          <p>先在填写器导出个人 JSON，再回到这里导入；也可以直接读取本机缓存里的填写记录。</p>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <dialog id="duplicateDialog" class="evidence-viewer-dialog compact-dialog" aria-labelledby="duplicateTitle">
+      <form method="dialog">
+        <p class="eyebrow">Duplicate Sample</p>
+        <h2 id="duplicateTitle">检测到可能重复的样本</h2>
+        <p id="duplicateMessage" class="muted-copy">你希望怎么处理这份数据？</p>
+        <div class="dialog-actions">
+          <button class="ghost-button" value="cancel" type="submit">取消导入</button>
+          <button class="ghost-button" value="overwrite" type="submit">覆盖旧版本</button>
+          <button class="dark-button" value="keep" type="submit">保留两个版本</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="confirmDialog" class="evidence-viewer-dialog compact-dialog" aria-labelledby="confirmTitle">
+      <form method="dialog">
+        <p class="eyebrow">Confirm Action</p>
+        <h2 id="confirmTitle">确认操作</h2>
+        <p id="confirmMessage" class="muted-copy">请确认是否继续。</p>
+        <div class="dialog-actions">
+          <button class="ghost-button" value="cancel" type="submit">取消</button>
+          <button class="dark-button" id="confirmAcceptButton" value="confirm" type="submit">确认</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="evidenceViewer" class="evidence-viewer-dialog" aria-labelledby="viewerTitle">
+      <div class="viewer-shell">
+        <header class="viewer-header">
+          <div>
+            <p id="viewerStage" class="eyebrow">Evidence</p>
+            <h2 id="viewerTitle">证据预览</h2>
+          </div>
+          <div class="viewer-actions">
+            <button class="ghost-button viewer-image-tool" id="viewerZoomOut" type="button">缩小</button>
+            <button class="ghost-button viewer-image-tool" id="viewerZoomIn" type="button">放大</button>
+            <button class="ghost-button viewer-image-tool" id="viewerReset" type="button">重置</button>
+            <button class="ghost-button" id="viewerDownload" type="button">下载</button>
+            <button class="ghost-button" id="viewerClose" type="button">关闭</button>
+          </div>
+        </header>
+        <div id="viewerBody" class="viewer-body"></div>
+        <footer class="viewer-footer">
+          <button class="ghost-button viewer-image-tool" id="viewerPrev" type="button">上一张</button>
+          <span id="viewerCount">1 / 1</span>
+          <button class="ghost-button viewer-image-tool" id="viewerNext" type="button">下一张</button>
+        </footer>
+      </div>
+    </dialog>
+
+    <script src="./assets/vendor/html2canvas.min.js" defer></script>
+    <script src="./assets/vendor/jszip.min.js" defer></script>
+    <script src="./assets/dashboard.js" defer></script>
+  </body>
+</html>
