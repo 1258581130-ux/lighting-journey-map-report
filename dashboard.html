@@ -45,6 +45,7 @@
             <span>选择 JSON / 证据包 ZIP</span>
           </label>
           <button class="ghost-button" id="loadLocalButton" type="button">读取缓存</button>
+          <button class="ghost-button cloud-button" id="loadCloudButton" type="button">读取云端</button>
           <button class="ghost-button" id="clearCurrentButton" type="button">清空展示</button>
           <button class="ghost-button danger-subtle" id="clearDraftCacheButton" type="button">清空填写缓存</button>
           <button class="ghost-button danger-subtle" id="clearAllLocalButton" type="button">清空全部缓存</button>
@@ -57,6 +58,14 @@
             <p id="restoredSampleNames">暂无数据</p>
           </div>
           <button class="ghost-button" id="clearRestoredButton" type="button">清空后重新导入</button>
+        </div>
+
+        <div id="cloudSyncNotice" class="session-restore-notice cloud-sync-notice" hidden>
+          <div>
+            <span>云端实时同步</span>
+            <p id="cloudSyncStatus">未启用 Supabase。</p>
+          </div>
+          <button class="ghost-button" id="refreshCloudButton" type="button">刷新云端</button>
         </div>
 
         <div class="imported-panel" aria-label="已导入数据">
@@ -164,6 +173,9 @@
 
     <script src="./assets/vendor/html2canvas.min.js" defer></script>
     <script src="./assets/vendor/jszip.min.js" defer></script>
+    <script src="./assets/vendor/supabase.min.js" defer></script>
+    <script src="./assets/supabase-config.js" defer></script>
+    <script src="./assets/cloud-sync.js" defer></script>
     <script src="./assets/dashboard.js" defer></script>
   </body>
 </html>

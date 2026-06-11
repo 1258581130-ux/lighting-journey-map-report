@@ -16,6 +16,7 @@
       <nav class="top-actions" aria-label="页面操作">
         <a class="ghost-button" href="./dashboard.html">打开展示页</a>
         <button class="ghost-button save-button" id="manualSaveButton" type="button">保存</button>
+        <button class="ghost-button cloud-button" id="cloudSubmitButton" type="button">提交云端</button>
         <button class="dark-button" id="exportJsonButton" type="button">导出 JSON</button>
       </nav>
     </header>
@@ -264,6 +265,9 @@
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <script src="./assets/vendor/jszip.min.js" defer></script>
+    <script src="./assets/vendor/supabase.min.js" defer></script>
+    <script src="./assets/supabase-config.js" defer></script>
+    <script src="./assets/cloud-sync.js" defer></script>
     <script src="./assets/app.js" defer></script>
   </body>
 </html>

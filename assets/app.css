@@ -787,6 +787,16 @@ input[type="range"] {
   color: var(--color-muted-text);
 }
 
+.cloud-button {
+  border-color: #bfd7f2;
+  background: rgba(248, 250, 252, 0.92);
+  color: var(--color-stone-charcoal);
+}
+
+.cloud-button:disabled {
+  opacity: 0.62;
+}
+
 .form-actions {
   justify-content: space-between;
   margin-top: 26px;
@@ -1314,6 +1324,11 @@ input[type="range"] {
   border-radius: 12px;
   background: #fff;
   white-space: nowrap;
+}
+
+.cloud-sync-notice {
+  border-color: #dce7f3;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(255, 255, 255, 0.82));
 }
 
 .imported-list {

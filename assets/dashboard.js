@@ -56,6 +56,9 @@
     restoredSession: false,
     isRestoring: false,
     persistTimer: null,
+    cloudSubscription: null,
+    cloudRefreshTimer: null,
+    cloudStatus: "",
     viewer: {
       evidenceItems: [],
       currentIndex: 0,
@@ -480,7 +483,7 @@
     });
   }
 
-  async function mergeRecords(records, mode = getImportMode()) {
+  async function mergeRecords(records, mode = getImportMode(), options = {}) {
     document.body.classList.add("is-importing");
     if (mode === "replace") {
       await clearDashboardSessionOnly();
@@ -498,7 +501,7 @@
       let key = recordKey(record);
 
       if (duplicate) {
-        const decision = await askDuplicateAction(record, duplicate);
+        const decision = options.duplicateStrategy || await askDuplicateAction(record, duplicate);
         if (decision === "cancel") {
           skipped += 1;
           continue;
@@ -523,7 +526,50 @@
     render();
     scheduleDashboardSessionSave();
     window.setTimeout(() => document.body.classList.remove("is-importing"), state.reducedMotion ? 0 : 720);
-    showToast(`已导入 ${added} 份数据${skipped ? `，跳过 ${skipped} 份` : ""}`);
+    if (!options.silent) {
+      showToast(`已导入 ${added} 份数据${skipped ? `，跳过 ${skipped} 份` : ""}`);
+    }
+  }
+
+  async function loadCloudRecords(options = {}) {
+    if (!window.LightingCloud || !window.LightingCloud.isEnabled()) {
+      state.cloudStatus = "Supabase 未启用。请先填写 assets/supabase-config.js。";
+      renderCloudNotice();
+      if (!options.silent) showToast("云端同步未启用，请先完成 Supabase 配置。");
+      return;
+    }
+    state.cloudStatus = "正在读取云端旅程数据";
+    renderCloudNotice();
+    const records = await window.LightingCloud.fetchJourneys();
+    await mergeRecords(records, "append", {
+      duplicateStrategy: "overwrite",
+      silent: true
+    });
+    state.cloudStatus = records.length
+      ? `已连接云端，当前读取 ${records.length} 份样本。展示页会实时更新。`
+      : "已连接云端，暂时还没有提交的样本。";
+    renderCloudNotice();
+    if (!options.silent) showToast(records.length ? `已读取 ${records.length} 份云端样本` : "云端暂时没有样本");
+  }
+
+  function initCloudSync() {
+    renderCloudNotice();
+    if (!window.LightingCloud || !window.LightingCloud.isEnabled()) return;
+    loadCloudRecords({ silent: true }).catch((error) => {
+      state.cloudStatus = `云端读取失败：${error.message}`;
+      renderCloudNotice();
+    });
+    state.cloudSubscription = window.LightingCloud.subscribeToJourneys(() => {
+      clearTimeout(state.cloudRefreshTimer);
+      state.cloudRefreshTimer = window.setTimeout(() => {
+        loadCloudRecords({ silent: true }).catch((error) => {
+          state.cloudStatus = `云端更新失败：${error.message}`;
+          renderCloudNotice();
+        });
+      }, 520);
+    });
+    state.cloudStatus = "云端实时同步已开启。";
+    renderCloudNotice();
   }
 
   function findDuplicateRecord(record, records) {
@@ -639,7 +685,7 @@
       const file = new File([blob], item.url.split("/").pop() || `${item.name || "journey"}.zip`, { type: "application/zip" });
       records.push(await readZipPackage(file));
     }
-    await mergeRecords(records, "append");
+    await mergeRecords(records, "append", { silent: true });
     state.restoredSession = true;
     showToast(`已加载 ${records.length} 份发布版旅程数据`);
   }
@@ -795,6 +841,7 @@
     renderImportedList();
     renderFilters();
     renderRestoreNotice();
+    renderCloudNotice();
     if (!state.records.length) {
       $("#reportSurface").innerHTML = `
         <div class="empty-state report-reveal">
@@ -860,6 +907,19 @@
     names.textContent = sampleNames.length
       ? `${sampleNames.join("、")}（共 ${state.records.length} 份）`
       : `共 ${state.records.length} 份旅程数据`;
+  }
+
+  function renderCloudNotice() {
+    const notice = $("#cloudSyncNotice");
+    const status = $("#cloudSyncStatus");
+    if (!notice || !status) return;
+    const enabled = Boolean(window.LightingCloud && window.LightingCloud.isEnabled());
+    if (!enabled && !state.cloudStatus) {
+      notice.hidden = true;
+      return;
+    }
+    notice.hidden = false;
+    status.textContent = state.cloudStatus || "Supabase 已配置，展示页会读取云端旅程数据。";
   }
 
   function renderFilters() {
@@ -1455,6 +1515,9 @@
     if (!blob && file.storageKey) {
       blob = await getEvidenceBlob(file.storageKey);
     }
+    if (!blob && window.LightingCloud && window.LightingCloud.isEnabled() && (file.cloudStoragePath || file.storagePath)) {
+      blob = await window.LightingCloud.downloadEvidence(file).catch(() => null);
+    }
     if (!blob) return;
     file._blob = normalizeEvidenceBlob(file, blob);
     file.hasOriginalFile = true;
@@ -1892,6 +1955,12 @@
     $("#loadLocalButton").addEventListener("click", () => {
       loadLocalRecords().catch((error) => showToast(`缓存读取失败：${error.message}`));
     });
+    $("#loadCloudButton").addEventListener("click", () => {
+      loadCloudRecords().catch((error) => showToast(`云端读取失败：${error.message}`));
+    });
+    $("#refreshCloudButton").addEventListener("click", () => {
+      loadCloudRecords().catch((error) => showToast(`云端刷新失败：${error.message}`));
+    });
     $("#clearCurrentButton").addEventListener("click", () => {
       clearCurrentData().catch((error) => showToast(`清空展示失败：${error.message}`));
     });
@@ -1969,6 +2038,9 @@
         showToast(`展示数据加载失败：${error.message}`);
         renderImportedList();
         renderFilters();
+      })
+      .finally(() => {
+        initCloudSync();
       });
   }
 

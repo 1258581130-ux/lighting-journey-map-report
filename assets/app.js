@@ -343,6 +343,38 @@
     }
   }
 
+  async function submitCurrentJourneyToCloud() {
+    const button = $("#cloudSubmitButton");
+    if (!window.LightingCloud || !window.LightingCloud.isEnabled()) {
+      showToast("云端同步未启用。请先填写 assets/supabase-config.js。");
+      return;
+    }
+    clearTimeout(state.saveTimer);
+    readStageFromForm({ commitName: true });
+    saveData();
+    const originalText = button ? button.textContent : "";
+    if (button) {
+      button.disabled = true;
+      button.textContent = "提交中";
+    }
+    try {
+      const uploadedJourney = await window.LightingCloud.saveJourney(state.data, {
+        getBlob: async (file) => (file.storageKey ? getEvidenceBlob(file.storageKey) : null)
+      });
+      window.LightingCloud.mergeCloudFileFields(state.data, uploadedJourney);
+      saveData();
+      renderEvidenceFiles();
+      showToast("已提交到云端，展示页会实时更新");
+    } catch (error) {
+      showToast(`云端提交失败：${error.message}`);
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = originalText || "提交云端";
+      }
+    }
+  }
+
   function compactDataForStorage(data) {
     const compact = JSON.parse(JSON.stringify(data));
     compact.stages.forEach((stage) => {
@@ -1449,6 +1481,9 @@
 
     $("#fillPendingButton").addEventListener("click", fillPending);
     $("#manualSaveButton").addEventListener("click", manualSave);
+    $("#cloudSubmitButton").addEventListener("click", () => {
+      submitCurrentJourneyToCloud();
+    });
     $("#exportJsonButton").addEventListener("click", openExportDialog);
     $("#confirmExportButton").addEventListener("click", () => {
       $("#exportDialog").close();
