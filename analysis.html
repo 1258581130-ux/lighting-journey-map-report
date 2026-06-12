@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>灯光设计用户触点地图分析总结</title>
+    <link rel="stylesheet" href="./assets/theme.css">
+    <link rel="stylesheet" href="./assets/app.css">
+    <link rel="stylesheet" href="./assets/analysis.css">
+  </head>
+  <body data-page="analysis">
+    <div class="analysis-progress" id="scrollProgress"></div>
+    <header class="topbar analysis-topbar">
+      <a class="brand" href="#top" aria-label="灯光设计用户触点地图分析总结">
+        <span class="brand-mark"></span>
+        <span>Lighting Analysis</span>
+      </a>
+      <nav class="top-actions" aria-label="页面操作">
+        <a class="ghost-button" href="./dashboard.html">打开展示页</a>
+        <a class="ghost-button" href="./index.html">返回填写器</a>
+        <button class="ghost-button" type="button" id="printButton">打印 PDF</button>
+        <button class="dark-button" type="button" id="copyButton">复制总结</button>
+      </nav>
+    </header>
+
+    <main class="analysis-shell" id="top">
+      <section class="analysis-hero reveal" aria-labelledby="page-title">
+        <div class="analysis-hero-copy">
+          <p class="eyebrow">Lighting Journey Map · Analysis Summary</p>
+          <h1 id="page-title">灯光设计用户触点地图分析总结</h1>
+          <p class="lead">基于柏曼、高灯大师、Lipro 三份体验样本，把汇报结论和原始旅程数据联动起来：情绪曲线能看到波动，阶段详情能看到原因，证据卡能回到截图、PDF、表格和图纸。</p>
+          <div class="hero-actions">
+            <a class="dark-button" href="#emotion">查看情绪曲线</a>
+            <a class="ghost-button" href="#journey">查看链路诊断</a>
+          </div>
+        </div>
+        <aside class="analysis-preview-card" aria-label="分析总览">
+          <div class="preview-toolbar">
+            <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span class="live-pill"><i></i>Evidence linked</span>
+          </div>
+          <div class="analysis-stat-grid">
+            <div>
+              <span>已读取样本</span>
+              <strong id="sampleCount">0</strong>
+              <small>来自展示页导入会话</small>
+            </div>
+            <div>
+              <span>附件证据</span>
+              <strong id="evidenceCount">0</strong>
+              <small>截图 / PDF / 表格 / 图纸</small>
+            </div>
+            <div>
+              <span>共同低谷</span>
+              <strong id="lowestStageLabel">待读取</strong>
+              <small>按情绪均值计算</small>
+            </div>
+          </div>
+          <p class="analysis-note" id="restoreState">正在读取展示页上次导入的数据...</p>
+        </aside>
+      </section>
+
+      <nav class="analysis-nav" aria-label="分析目录" id="reportNav">
+        <a href="#goal">明确方向</a>
+        <a href="#samples">样本总览</a>
+        <a href="#emotion">情绪曲线</a>
+        <a href="#journey">链路诊断</a>
+        <a href="#insights">核心洞察</a>
+        <a href="#actions">落地动作</a>
+        <a href="#summary">总结</a>
+      </nav>
+
+      <section class="analysis-section reveal" id="goal">
+        <div class="analysis-section-head">
+          <div>
+            <p class="eyebrow">01 · Direction Setting</p>
+            <h2>明确方向</h2>
+            <p>灯光设计要按全链路服务推进，既看用户体验，也看转化效率，并为后续线下店、设计师合作和产品开发提供用户洞察依据。</p>
+          </div>
+          <div class="section-kicker">本次分析聚焦“哪些触点会增强信任，哪些触点会造成流失”，并将结论转成可执行动作。</div>
+        </div>
+        <div class="analysis-grid four">
+          <article class="analysis-card metric-card"><p class="eyebrow">User Experience</p><strong>体验</strong><span>降低理解门槛，让用户愿意继续沟通。</span></article>
+          <article class="analysis-card metric-card"><p class="eyebrow">Conversion</p><strong>转化</strong><span>从咨询、付费、方案到买灯形成闭环。</span></article>
+          <article class="analysis-card metric-card"><p class="eyebrow">Service System</p><strong>SOP</strong><span>把客服、问卷、交付和说明标准化。</span></article>
+          <article class="analysis-card metric-card"><p class="eyebrow">Business Barrier</p><strong>壁垒</strong><span>用用户洞察反哺产品线和设计师合作。</span></article>
+        </div>
+      </section>
+
+      <section class="analysis-section reveal" id="samples">
+        <div class="analysis-section-head">
+          <div>
+            <p class="eyebrow">02 · Sample Overview</p>
+            <h2>三份体验样本总览</h2>
+            <p>三份样本分别覆盖前端内容、客服咨询、价格说明、需求沟通、方案交付和方案理解等关键环节。</p>
+          </div>
+        </div>
+        <div class="sample-overview-grid">
+          <article class="analysis-card overview-card">
+            <div class="sample-head">
+              <div>
+                <p class="sample-pill">Sample A</p>
+                <h3>柏曼</h3>
+              </div>
+              <span class="status-pill">较完整</span>
+            </div>
+            <div class="sample-info-stack">
+              <section class="sample-info-block">
+                <h4>流程状态</h4>
+                <p>已覆盖咨询、下单、资料提交、需求沟通、方案交付和修改沟通。</p>
+              </section>
+              <section class="sample-info-block">
+                <h4>正向表现</h4>
+                <p>客服资料较完整，价格与流程透明；设计师会问老人夜起、小孩年龄、阳台晾衣架、浴霸等生活细节。</p>
+              </section>
+              <section class="sample-info-block">
+                <h4>待优化点</h4>
+                <p>案例图美感不足；方案交付后缺少主动解释设计思路和优化点。</p>
+              </section>
+            </div>
+          </article>
+          <article class="analysis-card overview-card">
+            <div class="sample-head">
+              <div>
+                <p class="sample-pill">Sample B</p>
+                <h3>高灯大师</h3>
+              </div>
+              <span class="status-pill">前段有效</span>
+            </div>
+            <div class="sample-info-stack">
+              <section class="sample-info-block">
+                <h4>流程状态</h4>
+                <p>前期搜索、咨询、价格确认、问卷填写、资料提交和初步沟通信息较完整。</p>
+              </section>
+              <section class="sample-info-block">
+                <h4>正向表现</h4>
+                <p>下单后问卷有一定专业感，能够让用户感知服务不是单纯卖灯。</p>
+              </section>
+              <section class="sample-info-block">
+                <h4>待优化点</h4>
+                <p>套餐区别、服务内容、需要准备什么都要用户反复追问；后续方案查看和修改施工阶段仍需补充。</p>
+              </section>
+            </div>
+          </article>
+          <article class="analysis-card overview-card">
+            <div class="sample-head">
+              <div>
+                <p class="sample-pill">Sample C</p>
+                <h3>Lipro</h3>
+              </div>
+              <span class="status-pill">卡点集中</span>
+            </div>
+            <div class="sample-info-stack">
+              <section class="sample-info-block">
+                <h4>流程状态</h4>
+                <p>已走到方案查看与理解阶段，修改下单和施工衔接尚未实际体验。</p>
+              </section>
+              <section class="sample-info-block">
+                <h4>正向表现</h4>
+                <p>能提供 PDF、Excel、DWG 等专业文件，具备产品与智能联动基础。</p>
+              </section>
+              <section class="sample-info-block">
+                <h4>待优化点</h4>
+                <p>前端内容偏灯具卖点，客服偏推拍单，需求沟通缺少框架，图纸交付后用户看不懂。</p>
+              </section>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="analysis-section reveal" id="emotion">
+        <div class="analysis-section-head">
+          <div>
+            <p class="eyebrow">03 · Emotion Evidence</p>
+            <h2>个人情绪曲线对比</h2>
+            <p>每条曲线对应一个品牌体验样本。点击节点可查看该阶段的情绪原因、痛点、机会点和证据摘要。</p>
+          </div>
+        </div>
+        <div class="emotion-curve-grid" id="emotionCurves"></div>
+      </section>
+
+      <section class="analysis-section reveal" id="journey">
+        <div class="analysis-section-head">
+          <div>
+            <p class="eyebrow">04 · Journey Diagnosis</p>
+            <h2>9 个用户触点诊断</h2>
+            <p>按统一旅程阶段看，当前最影响体验与转化的节点集中在“前端服务感、客服引导、需求沟通、交付解释”四处。</p>
+          </div>
+        </div>
+        <div class="journey-layout">
+          <div class="timeline" id="stageTimeline"></div>
+          <aside class="stage-detail" id="stageDetail" aria-live="polite"></aside>
+        </div>
+      </section>
+
+      <section class="analysis-section reveal" id="insights">
+        <div class="analysis-section-head">
+          <div>
+            <p class="eyebrow">05 · Key Insights</p>
+            <h2>6 个核心洞察</h2>
+            <p>这些洞察直接对应用户体验、转化率和服务壁垒建设。</p>
+          </div>
+        </div>
+        <div class="insight-list">
+          <details class="insight-item" open><summary><h3>用户前期缺的不是参数，而是“怎么开始”</h3><span>＋</span></summary><div><p>用户一开始更关心灯光设计有没有必要、找谁做、值不值得、会不会被强推灯具。前端内容需要先降低决策门槛。</p><p class="action-line">落地动作：补充小白入口，讲清适合阶段、费用、交付物、案例和是否抵扣灯款。</p></div></details>
+          <details class="insight-item"><summary><h3>客服是转化第一关，不只是消息回复</h3><span>＋</span></summary><div><p>客服需要承担服务解释、阶段判断、资料引导、套餐推荐和信任建立，而不是把用户直接推向拍单链接。</p><p class="action-line">落地动作：客服首轮改成“判断阶段－解释流程－给资料清单－推荐路径”。</p></div></details>
+          <details class="insight-item"><summary><h3>需求沟通要从“问参数”转向“问生活”</h3><span>＋</span></summary><div><p>小白用户很难回答专业问题，但可以回答家庭成员、作息、观影、做饭、学习、起夜和预算等真实生活问题。</p><p class="action-line">落地动作：问卷围绕生活场景组织，设计师再把场景翻译成灯位、照度和色温。</p></div></details>
+          <details class="insight-item"><summary><h3>交付物越专业，越需要小白解释</h3><span>＋</span></summary><div><p>PDF、DWG、灯具清单和照度图是专业资产，但如果没有设计说明，用户很难判断方案价值，也难以推进购买。</p><p class="action-line">落地动作：每套方案配小白版说明：空间目标、设计理由、确认项、施工注意点。</p></div></details>
+          <details class="insight-item"><summary><h3>案例要有高级感，也要有真实代入感</h3><span>＋</span></summary><div><p>过于大平层、别墅化的案例容易失去普通用户代入；案例库要覆盖 100-150 方真实户型和不同家庭结构。</p><p class="action-line">落地动作：案例按面积、户型、家庭结构和空间场景分类，并写清设计前后解决了什么。</p></div></details>
+          <details class="insight-item"><summary><h3>设计师合作的核心是帮对方省时间、提高成交</h3><span>＋</span></summary><div><p>设计师也是用户。合作不只是返点，而是让设计师把客户诉求交过来，由我们更快完成出图、报价、选灯和售后承接。</p><p class="action-line">落地动作：验证“设计师拉群－我们出图报价－售前售后承接－返点结算”的合作链路。</p></div></details>
+        </div>
+      </section>
+
+      <section class="analysis-section reveal" id="actions">
+        <div class="analysis-section-head">
+          <div>
+            <p class="eyebrow">06 · Next Actions</p>
+            <h2>下一步落地动作</h2>
+            <p>把体验样本转成可执行的服务标准，先跑 V1，再根据真实成交/未成交样本持续打磨。</p>
+          </div>
+        </div>
+        <div class="roadmap">
+          <article class="roadmap-card"><h3>前端服务入口标准</h3><ul><li>适合什么装修阶段</li><li>需要准备什么资料</li><li>服务流程与交付物</li><li>价格、周期、退款/抵扣规则</li><li>同户型真实案例</li></ul></article>
+          <article class="roadmap-card"><h3>客服首轮 SOP</h3><ul><li>判断装修阶段</li><li>解释服务路径</li><li>发送资料清单</li><li>推荐适配套餐</li><li>给案例和下一步时间</li></ul></article>
+          <article class="roadmap-card"><h3>生活方式需求问卷</h3><ul><li>家庭成员与作息</li><li>老人夜起 / 小孩学习</li><li>观影 / 做饭 / 会客</li><li>层高、吊顶、风格偏好</li><li>预算与购买意向</li></ul></article>
+          <article class="roadmap-card"><h3>交付物小白说明</h3><ul><li>每个空间灯光目标</li><li>灯位设计理由</li><li>色温、防眩和亮度解释</li><li>灯具清单购买建议</li><li>施工确认注意事项</li></ul></article>
+        </div>
+      </section>
+
+      <section class="analysis-section reveal" id="summary">
+        <div class="analysis-section-head">
+          <div>
+            <p class="eyebrow">07 · Summary</p>
+            <h2>总结</h2>
+          </div>
+        </div>
+        <div class="script-box" id="speechText">本次用户触点地图分析总结，核心结论是：灯光设计不是单点商品，而是一条从内容种草、搜索进店、客服咨询、资料提交、需求沟通、方案交付到下单施工的完整服务链路。要提升转化，先要让用户在每一步都有确定感。
+
+从三份样本看，柏曼的流程相对完整，客服说明和需求沟通较好，但案例美感和方案解释还可以加强；高灯大师前期能让用户感知到服务，但套餐、流程和资料准备说明需要用户反复追问，后续方案交付样本还需补齐；Lipro具备产品和专业文件交付能力，但前端内容更偏灯具卖点，客服和设计师引导不足，用户拿到图纸后依然需要小白版解释。
+
+三个样本共同说明：用户最需要的不是更多专业参数，而是清楚知道这个服务值不值得、自己需要准备什么、设计师为什么这样设计，以及拿到方案后下一步怎么做。</div>
+      </section>
+    </main>
+
+    <aside class="analysis-drawer" id="analysisDrawer" aria-label="阶段证据详情" aria-hidden="true"></aside>
+    <div class="analysis-modal" id="analysisModal" aria-hidden="true"></div>
+    <button class="back-top" id="backTop" type="button" aria-label="回到顶部">↑</button>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./assets/vendor/jszip.min.js" defer></script>
+    <script src="./assets/analysis.js" defer></script>
+  </body>
+</html>
