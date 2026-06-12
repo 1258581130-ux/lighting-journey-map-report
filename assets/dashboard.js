@@ -45,12 +45,16 @@
     records: [],
     view: "summary",
     selectedJourneyId: "",
+    pendingDeepLink: parseDashboardDeepLink(),
+    deepLinkApplied: false,
     filters: {
       sampleType: "全部",
       dateRange: "全部",
       tag: "全部",
       completion: "全部"
     },
+    individualMapMode: "overview",
+    detailStageId: "",
     toastTimer: null,
     sessionId: localStorage.getItem(DASHBOARD_SESSION_KEY) || "",
     restoredSession: false,
@@ -147,6 +151,45 @@
 
   function recordKey(record) {
     return record._dashboardKey || record.journeyId || `${record.personId || ""}:${record.personName}`;
+  }
+
+  function parseDashboardDeepLink() {
+    const params = new URLSearchParams(window.location.search);
+    const link = {
+      view: params.get("view") || "",
+      journeyId: params.get("journeyId") || "",
+      personName: params.get("personName") || "",
+      stage: params.get("stage") || ""
+    };
+    return link.view || link.journeyId || link.personName || link.stage ? link : null;
+  }
+
+  function recordMatchesDeepLink(record, link) {
+    if (!record || !link) return false;
+    if (link.journeyId && (record.journeyId === link.journeyId || recordKey(record) === link.journeyId)) return true;
+    if (link.personName && record.personName === link.personName) return true;
+    return Boolean(link.personName && record.personName && record.personName.includes(link.personName));
+  }
+
+  function applyPendingDeepLink() {
+    const link = state.pendingDeepLink;
+    if (!link || state.deepLinkApplied || !state.records.length) return false;
+    const record = state.records.find((item) => recordMatchesDeepLink(item, link));
+    state.deepLinkApplied = true;
+    if (!record) {
+      showToast("没有找到链接指定的样本，请确认已导入对应 JSON / ZIP");
+      return false;
+    }
+    state.view = link.view || "individual";
+    if (link.personName || link.journeyId || link.stage) state.view = "individual";
+    state.selectedJourneyId = recordKey(record);
+    updateTabState();
+    render();
+    if (link.stage) {
+      window.setTimeout(() => openStageDetail(link.stage), 80);
+    }
+    showToast(`已打开 ${record.personName}${link.stage ? ` · Stage ${String(link.stage).padStart(2, "0")}` : ""}`);
+    return true;
   }
 
   function stableDuplicateKey(record) {
@@ -377,8 +420,10 @@
         : (state.records[0] ? recordKey(state.records[0]) : "");
       state.sessionId = session.sessionId;
       state.restoredSession = Boolean(state.records.length);
-      updateTabState();
-      render();
+      if (!applyPendingDeepLink()) {
+        updateTabState();
+        render();
+      }
       if (state.records.length) {
         showToast("已恢复上次导入的展示数据");
       }
@@ -523,7 +568,7 @@
     if (!state.records.some((record) => recordKey(record) === state.selectedJourneyId)) {
       state.selectedJourneyId = state.records[0] ? recordKey(state.records[0]) : "";
     }
-    render();
+    if (!applyPendingDeepLink()) render();
     scheduleDashboardSessionSave();
     window.setTimeout(() => document.body.classList.remove("is-importing"), state.reducedMotion ? 0 : 720);
     if (!options.silent) {
@@ -826,6 +871,7 @@
 
   function setView(view) {
     state.view = view;
+    if (view !== "individual") closeStageDetail({ silent: true });
     updateTabState();
     render();
     scheduleDashboardSessionSave();
@@ -869,6 +915,7 @@
       $("#reportSurface").classList.add("report-ready");
     });
     bindPersonSwitcher();
+    bindJourneyMapControls();
     bindEvidenceCards();
   }
 
@@ -1030,30 +1077,126 @@
           </div>
           ${renderCurve(record.stages, "individual")}
         </div>
-        <div class="journey-scroll sequence-item">
-          <div class="journey-map">
-            ${record.stages.map(renderJourneyColumn).join("")}
+        <div class="section-heading sequence-item journey-map-toolbar">
+          <div>
+            <p class="eyebrow">Journey Map Grid</p>
+            <h2>横向旅程地图</h2>
+          </div>
+          <div class="map-mode-toggle" aria-label="个人地图视图">
+            <button type="button" data-map-mode="overview" class="${state.individualMapMode === "overview" ? "active" : ""}">汇报总览</button>
+            <button type="button" data-map-mode="detail" class="${state.individualMapMode === "detail" ? "active" : ""}">详细查看</button>
           </div>
         </div>
+        ${renderJourneyMapGrid(record)}
       </article>
     `;
   }
 
-  function renderJourneyColumn(stage) {
+  function renderJourneyMapGrid(record) {
+    const stages = record.stages || [];
+    const rows = [
+      { key: "goal", label: "用户目标", className: "text-row", render: (stage) => renderTextCell(stage.goal || stage.status, 4, stage) },
+      { key: "actions", label: "关键行为", className: "text-row", render: (stage) => renderTextCell(stage.actions, 4, stage) },
+      { key: "touchpoints", label: "接触点", className: "touchpoint-row", render: renderTouchpointCell },
+      { key: "thoughts", label: "真实想法", className: "text-row", render: (stage) => renderTextCell(stage.thoughts, 4, stage) },
+      { key: "emotion", label: "情绪", className: "emotion-row", render: renderEmotionMapCell },
+      { key: "pain", label: "痛点", className: "compact-row", render: renderPainMapCell },
+      { key: "opportunity", label: "机会 / 内容机会", className: "compact-row", render: renderOpportunityMapCell },
+      { key: "evidence", label: "证据", className: "evidence-row", render: renderEvidenceSummary }
+    ];
+    return `
+      <div class="journey-map-shell sequence-item">
+        <div class="journey-map-scroll-hint">横向滚动查看完整 9 个阶段，点击任意单元格查看完整阶段详情。</div>
+        <div class="journey-map-grid ${state.individualMapMode === "detail" ? "detail-mode" : "overview-mode"}" style="--stage-count: ${stages.length}">
+          <div class="journey-cell row-label stage-header map-corner">字段</div>
+          ${stages.map(renderStageHeaderCell).join("")}
+          ${rows.map((row) => `
+            <div class="journey-cell row-label ${row.className}">${escapeHtml(row.label)}</div>
+            ${stages.map((stage) => `
+              <div class="journey-cell map-cell ${row.className}" data-open-stage-detail="${escapeHtml(stage.id)}" role="button" tabindex="0">
+                ${row.render(stage)}
+              </div>
+            `).join("")}
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderStageHeaderCell(stage) {
+    return `
+      <div class="journey-cell stage-header map-cell" data-open-stage-detail="${escapeHtml(stage.id)}" role="button" tabindex="0">
+        <span class="cell-label">Stage ${String(stage.id).padStart(2, "0")}</span>
+        <strong>${escapeHtml(stage.name)}</strong>
+        <small>${escapeHtml(stage.description || "")}</small>
+      </div>
+    `;
+  }
+
+  function renderTextCell(value, lines = 4, stage = null) {
+    const text = String(value || "").trim();
+    return `
+      <div class="cell-text clamp-${lines}">${escapeHtml(text || "未填写").replace(/\n/g, "<br>")}</div>
+      ${stage && text.length > (lines === 4 ? 72 : 48) ? `<button class="detail-link" type="button" data-open-stage-detail="${escapeHtml(stage.id)}">查看详情</button>` : ""}
+    `;
+  }
+
+  function renderTouchpointCell(stage) {
+    return `<div class="cell-tags">${renderTags(stage.touchpoints)}</div>`;
+  }
+
+  function renderEmotionMapCell(stage) {
     const score = Number(stage.emotionScore);
     const rounded = clampScore(Math.round(score));
+    const emotion = EMOTIONS[String(rounded)];
     return `
-      <section class="journey-col">
-        <div class="journey-cell stage"><span class="cell-label">Stage ${String(stage.id).padStart(2, "0")}</span>${escapeHtml(stage.name)}</div>
-        ${renderCell("用户目标", stage.goal || stage.status)}
-        ${renderCell("关键行为", stage.actions)}
-        ${renderCell("接触点", renderTags(stage.touchpoints), true)}
-        ${renderCell("真实想法", stage.thoughts)}
-        <div class="journey-cell emotion"><span class="cell-label">情绪</span><strong>${formatScore(score)}</strong><br>${EMOTIONS[String(rounded)].emoji} ${escapeHtml(stage.emotionLabel || EMOTIONS[String(rounded)].label)}<br><small>${escapeHtml(stage.emotionReason || "暂无填写")}</small></div>
-        ${renderCell("痛点", `${stage.painSeverity}：${stage.painPoint || "无"}`)}
-        ${renderCell("机会 / 内容", `${stage.opportunity || "未填写"}\n${stage.contentOpportunity || ""}`)}
-        ${renderCell("证据", renderJourneyEvidence(stage), true)}
-      </section>
+      <div class="map-emotion">
+        <strong>${formatScore(score)}</strong>
+        <span>${emotion.emoji} ${escapeHtml(stage.emotionLabel || emotion.label)}</span>
+        <p class="cell-text reason clamp-2">${escapeHtml(stage.emotionReason || "暂无情绪原因")}</p>
+      </div>
+    `;
+  }
+
+  function renderPainMapCell(stage) {
+    const severity = stage.painSeverity || "没有";
+    const pain = stage.painPoint || (severity === "没有" ? "无" : "未填写具体痛点");
+    return `
+      <div class="cell-stack">
+        <span class="mini-label">${escapeHtml(severity)}</span>
+        <p class="cell-text compact clamp-3">${escapeHtml(pain).replace(/\n/g, "<br>")}</p>
+      </div>
+    `;
+  }
+
+  function renderOpportunityMapCell(stage) {
+    const opportunity = stage.opportunity || "未填写";
+    const content = stage.contentOpportunity || "";
+    return `
+      <div class="cell-stack">
+        <p class="cell-text compact clamp-3">${escapeHtml(opportunity).replace(/\n/g, "<br>")}</p>
+        ${content ? `<p class="cell-text subtle clamp-2">${escapeHtml(content).replace(/\n/g, "<br>")}</p>` : ""}
+      </div>
+    `;
+  }
+
+  function renderEvidenceSummary(stage) {
+    const files = Array.isArray(stage.evidenceFiles) ? stage.evidenceFiles : [];
+    const evidenceText = String(stage.evidenceText || "").trim();
+    if (!files.length && !evidenceText) return "未填写";
+    const imageFiles = files.filter((file) => (file.category || categorizeEvidence(file)) === "image").slice(0, 2);
+    const fileCard = files.find((file) => (file.category || categorizeEvidence(file)) !== "image");
+    const visibleIds = new Set([...imageFiles, fileCard].filter(Boolean).map((file) => file.id));
+    const hiddenCount = files.filter((file) => !visibleIds.has(file.id)).length + (evidenceText ? 1 : 0);
+    return `
+      <div class="journey-evidence summary">
+        ${evidenceText ? `<p class="cell-text clamp-2">${escapeHtml(truncateText(evidenceText, 48))}</p>` : ""}
+        <div class="evidence-summary-grid">
+          ${imageFiles.map((file) => renderEvidenceMini(file, stage)).join("")}
+          ${fileCard ? renderEvidenceMini(fileCard, stage) : ""}
+        </div>
+        ${hiddenCount || files.length > visibleIds.size ? `<button class="detail-link" type="button" data-open-stage-detail="${escapeHtml(stage.id)}">查看全部证据，共 ${files.length + (evidenceText ? 1 : 0)} 份</button>` : ""}
+      </div>
     `;
   }
 
@@ -1101,8 +1244,58 @@
     `;
   }
 
-  function renderCell(label, value, html = false) {
-    return `<div class="journey-cell"><span class="cell-label">${label}</span>${html ? value : escapeHtml(value || "未填写").replace(/\n/g, "<br>")}</div>`;
+  function renderStageDetailDrawer(record, stageId = state.detailStageId) {
+    const stage = record.stages.find((item) => String(item.id) === String(stageId));
+    if (!stage) return "";
+    const score = Number(stage.emotionScore);
+    const rounded = clampScore(Math.round(score));
+    const emotion = EMOTIONS[String(rounded)];
+    return `
+      <button class="stage-detail-backdrop open" type="button" data-close-stage-detail aria-label="关闭阶段详情"></button>
+      <aside class="stage-detail-drawer open" aria-label="${escapeHtml(stage.name)} 阶段详情">
+        <header>
+          <div>
+            <p class="eyebrow">Stage ${String(stage.id).padStart(2, "0")}</p>
+            <h2>${escapeHtml(stage.name)}</h2>
+            <p>${escapeHtml(stage.description || "")}</p>
+          </div>
+          <button class="ghost-button" type="button" data-close-stage-detail>关闭</button>
+        </header>
+        <div class="stage-detail-content">
+          ${renderDetailBlock("用户目标", stage.goal || stage.status)}
+          ${renderDetailBlock("关键行为", stage.actions)}
+          ${renderDetailBlock("接触点", renderTags(stage.touchpoints), true)}
+          ${renderDetailBlock("真实想法", stage.thoughts)}
+          ${renderDetailBlock("情绪", `<div class="detail-emotion"><strong>${formatScore(score)}</strong><span>${emotion.emoji} ${escapeHtml(stage.emotionLabel || emotion.label)}</span><p>${escapeHtml(stage.emotionReason || "暂无情绪原因")}</p></div>`, true)}
+          ${renderDetailBlock("痛点", `${stage.painSeverity || "没有"}：${stage.painPoint || "无"}`)}
+          ${renderDetailBlock("机会点", stage.opportunity)}
+          ${renderDetailBlock("内容机会", stage.contentOpportunity)}
+          ${renderDetailBlock("证据", renderDetailEvidence(stage), true)}
+        </div>
+      </aside>
+    `;
+  }
+
+  function renderDetailBlock(label, value, html = false) {
+    const content = html ? value : escapeHtml(value || "未填写").replace(/\n/g, "<br>");
+    return `
+      <section class="stage-detail-block">
+        <h3>${escapeHtml(label)}</h3>
+        <div>${content}</div>
+      </section>
+    `;
+  }
+
+  function renderDetailEvidence(stage) {
+    const files = Array.isArray(stage.evidenceFiles) ? stage.evidenceFiles : [];
+    const evidenceText = String(stage.evidenceText || "").trim();
+    if (!files.length && !evidenceText) return `<p class="muted-copy">暂无证据。</p>`;
+    return `
+      <div class="detail-evidence-list">
+        ${evidenceText ? `<p class="evidence-text-full">${escapeHtml(evidenceText).replace(/\n/g, "<br>")}</p>` : ""}
+        ${files.map((file) => renderEvidenceMini(file, stage)).join("")}
+      </div>
+    `;
   }
 
   function renderTags(items) {
@@ -1458,6 +1651,8 @@
 
   function bindEvidenceCards() {
     document.querySelectorAll("[data-evidence-id][data-stage-id]").forEach((button) => {
+      if (button.dataset.evidenceBound === "true") return;
+      button.dataset.evidenceBound = "true";
       button.addEventListener("click", () => {
         openEvidenceFromCard(Number(button.dataset.stageId), button.dataset.evidenceId)
           .catch((error) => showToast(`证据打开失败：${error.message}`));
@@ -1916,10 +2111,86 @@
     document.querySelectorAll("[data-journey]").forEach((button) => {
       button.addEventListener("click", () => {
         state.selectedJourneyId = button.dataset.journey;
+        state.detailStageId = "";
+        closeStageDetail({ silent: true });
         render();
         scheduleDashboardSessionSave();
       });
     });
+  }
+
+  function bindJourneyMapControls() {
+    const rerenderWithoutJump = () => {
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
+      const mapShell = document.querySelector(".journey-map-shell");
+      const mapScrollLeft = mapShell ? mapShell.scrollLeft : 0;
+      const mapScrollTop = mapShell ? mapShell.scrollTop : 0;
+      render();
+      requestAnimationFrame(() => {
+        window.scrollTo(scrollX, scrollY);
+        const nextMapShell = document.querySelector(".journey-map-shell");
+        if (nextMapShell) {
+          nextMapShell.scrollLeft = mapScrollLeft;
+          nextMapShell.scrollTop = mapScrollTop;
+        }
+      });
+    };
+
+    document.querySelectorAll("[data-map-mode]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.individualMapMode = button.dataset.mapMode || "overview";
+        rerenderWithoutJump();
+      });
+    });
+
+    document.querySelectorAll("[data-open-stage-detail]").forEach((element) => {
+      element.addEventListener("click", (event) => {
+        if (event.target.closest("[data-evidence-id]")) return;
+        event.stopPropagation();
+        openStageDetail(element.dataset.openStageDetail);
+      });
+      element.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        openStageDetail(element.dataset.openStageDetail);
+      });
+    });
+
+    document.querySelectorAll("[data-close-stage-detail]").forEach((button) => {
+      button.addEventListener("click", () => {
+        closeStageDetail();
+      });
+    });
+  }
+
+  function openStageDetail(stageId) {
+    const record = currentIndividualRecord();
+    if (!record) return;
+    const markup = renderStageDetailDrawer(record, stageId);
+    if (!markup) return;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    closeStageDetail({ silent: true });
+    state.detailStageId = String(stageId);
+    const layer = document.createElement("div");
+    layer.id = "stageDetailLayer";
+    layer.innerHTML = markup;
+    document.body.append(layer);
+    layer.querySelectorAll("[data-close-stage-detail]").forEach((button) => {
+      button.addEventListener("click", () => closeStageDetail());
+    });
+    bindEvidenceCards();
+    requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
+  }
+
+  function closeStageDetail({ silent = false } = {}) {
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const layer = document.querySelector("#stageDetailLayer");
+    if (layer) layer.remove();
+    state.detailStageId = "";
+    if (!silent) requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
   }
 
   function showToast(message) {
@@ -2015,6 +2286,11 @@
     });
     document.querySelectorAll(".tab-button").forEach((button) => {
       button.addEventListener("click", () => setView(button.dataset.view));
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && document.querySelector("#stageDetailLayer")) {
+        closeStageDetail();
+      }
     });
     $("#sampleTypeFilter").addEventListener("change", (event) => {
       state.filters.sampleType = event.target.value;
