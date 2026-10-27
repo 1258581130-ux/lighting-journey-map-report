@@ -1,0 +1,623 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f4f3ef"><meta name="robots" content="noindex,nofollow"><meta name="description" content="简顿灯具杭州入户回访：用户体验、产品反馈与后续行动。"><title>杭州入户回访｜简顿灯具</title><style>/*
+ * Jiandun Web Foundation
+ * Copy this file into the target project's own assets directory before use.
+ */
+
+:root {
+  --jd-bg: #f4f3ef;
+  --jd-bg-soft: #efeeeb;
+  --jd-bg-warm: #edebe6;
+  --jd-bg-card: #ffffff;
+  --jd-bg-card-soft: #f8f7f3;
+  --jd-text-primary: #2f2116;
+  --jd-text-strong: #111111;
+  --jd-text-secondary: #6f675f;
+  --jd-text-muted: #9a948c;
+  --jd-accent-brown: #a2846a;
+  --jd-accent-gold: #c6ab8f;
+  --jd-line: #e4e0d8;
+  --jd-line-strong: #d6cdbf;
+  --jd-shadow-soft: 0 18px 48px rgba(63, 47, 35, .06);
+  --jd-radius-md: 18px;
+  --jd-radius-lg: 28px;
+  --jd-radius-xl: 36px;
+  --jd-ease: cubic-bezier(.2, .75, .25, 1);
+}
+
+.jd-page {
+  min-height: 100%;
+  color: var(--jd-text-primary);
+  background: var(--jd-bg);
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.jd-section {
+  width: min(100% - 32px, 1120px);
+  margin-inline: auto;
+  padding-block: clamp(32px, 6vw, 80px);
+}
+
+.jd-paper {
+  border: 1px solid var(--jd-line);
+  border-radius: var(--jd-radius-xl);
+  background: var(--jd-bg-card);
+  box-shadow: var(--jd-shadow-soft);
+}
+
+.jd-eyebrow {
+  margin: 0 0 8px;
+  color: var(--jd-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .1em;
+}
+
+.jd-title {
+  max-width: 16ch;
+  margin: 0;
+  color: var(--jd-text-strong);
+  font-size: clamp(32px, 5vw, 64px);
+  line-height: 1.12;
+  letter-spacing: -.035em;
+}
+
+.jd-copy {
+  max-width: 48rem;
+  margin: 16px 0 0;
+  color: var(--jd-text-secondary);
+  font-size: clamp(15px, 1.5vw, 17px);
+  line-height: 1.75;
+}
+
+.jd-button,
+.jd-choice-card,
+.jd-folder__trigger,
+.jd-preview-trigger {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.jd-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--jd-radius-md);
+  color: #fff;
+  background: var(--jd-text-primary);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+  text-decoration: none;
+  transition: transform 200ms var(--jd-ease), border-color 200ms var(--jd-ease), background-color 200ms var(--jd-ease);
+}
+
+.jd-button--secondary {
+  border-color: var(--jd-line-strong);
+  color: var(--jd-text-primary);
+  background: var(--jd-bg-card);
+}
+
+.jd-button:disabled,
+.jd-choice-card:disabled {
+  cursor: not-allowed;
+  opacity: .48;
+}
+
+.jd-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 12px;
+}
+
+.jd-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.jd-choice-field {
+  position: relative;
+  display: block;
+}
+
+.jd-choice-field > input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.jd-choice-card {
+  display: grid;
+  min-height: 132px;
+  align-content: start;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid var(--jd-line);
+  border-radius: var(--jd-radius-lg);
+  color: var(--jd-text-primary);
+  background: var(--jd-bg-card);
+  box-shadow: 0 8px 24px rgba(63, 47, 35, .035);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: transform 200ms var(--jd-ease), border-color 200ms var(--jd-ease), box-shadow 200ms var(--jd-ease), background-color 200ms var(--jd-ease);
+}
+
+.jd-choice-card strong {
+  color: var(--jd-text-strong);
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.jd-choice-card span {
+  color: var(--jd-text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.jd-choice-card.is-selected,
+.jd-choice-card[aria-pressed="true"] {
+  border-color: rgba(162, 132, 106, .68);
+  background: #fbf7ef;
+  box-shadow: 0 12px 28px rgba(93, 66, 44, .08);
+}
+
+.jd-choice-field > input:checked + .jd-choice-card {
+  border-color: rgba(162, 132, 106, .68);
+  background: #fbf7ef;
+  box-shadow: 0 12px 28px rgba(93, 66, 44, .08);
+}
+
+.jd-choice-field > input:focus-visible + .jd-choice-card {
+  outline: 3px solid rgba(162, 132, 106, .52);
+  outline-offset: 3px;
+}
+
+.jd-folder {
+  overflow: clip;
+  border: 1px solid var(--jd-line);
+  border-radius: var(--jd-radius-lg);
+  background: rgba(255, 255, 255, .72);
+}
+
+.jd-folder__trigger {
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 16px;
+  border: 0;
+  color: var(--jd-text-primary);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+  text-align: left;
+}
+
+.jd-folder__trigger > [aria-hidden="true"] {
+  color: var(--jd-text-muted);
+  transition: transform 180ms var(--jd-ease);
+}
+
+.jd-folder.is-open .jd-folder__trigger > [aria-hidden="true"] {
+  transform: rotate(180deg);
+}
+
+.jd-folder__panel {
+  padding: 0 16px 16px;
+  color: var(--jd-text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.jd-folder__panel > :first-child {
+  margin-top: 0;
+}
+
+.jd-folder__panel > :last-child {
+  margin-bottom: 0;
+}
+
+.jd-preview-trigger {
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  color: var(--jd-text-primary);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.jd-material-strip {
+  display: grid;
+  grid-auto-columns: minmax(144px, 168px);
+  grid-auto-flow: column;
+  gap: 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 2px 2px 10px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.jd-material-tile {
+  display: grid;
+  min-height: 170px;
+  align-content: space-between;
+  gap: 10px;
+  overflow: hidden;
+  padding: 10px;
+  border: 1px solid var(--jd-line);
+  border-radius: 20px;
+  color: var(--jd-text-primary);
+  background: var(--jd-bg-card);
+  box-shadow: 0 8px 20px rgba(63, 47, 35, .035);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.4;
+  text-align: left;
+  text-decoration: none;
+  scroll-snap-align: start;
+  transition: transform 200ms var(--jd-ease), border-color 200ms var(--jd-ease);
+}
+
+.jd-material-tile img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.jd-material-tile--empty {
+  place-content: center;
+  border-style: dashed;
+  color: var(--jd-text-secondary);
+  background: var(--jd-bg-card-soft);
+}
+
+.jd-status {
+  margin: 8px 0 0;
+  color: var(--jd-text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.jd-preview-dialog {
+  width: min(calc(100vw - 32px), 960px);
+  max-height: min(88vh, 860px);
+  padding: 12px;
+  border: 1px solid var(--jd-line);
+  border-radius: var(--jd-radius-lg);
+  color: var(--jd-text-primary);
+  background: var(--jd-bg-card);
+  box-shadow: 0 28px 72px rgba(35, 25, 17, .2);
+}
+
+.jd-preview-dialog::backdrop {
+  background: rgba(36, 29, 23, .42);
+}
+
+.jd-preview-dialog__close {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  border: 1px solid var(--jd-line);
+  border-radius: 50%;
+  color: var(--jd-text-primary);
+  background: var(--jd-bg-card);
+  cursor: pointer;
+  font: inherit;
+}
+
+.jd-preview-dialog__image {
+  display: block;
+  width: 100%;
+  max-height: calc(88vh - 76px);
+  margin-top: 8px;
+  object-fit: contain;
+}
+
+.jd-button:focus-visible,
+.jd-choice-card:focus-visible,
+.jd-folder__trigger:focus-visible,
+.jd-preview-trigger:focus-visible,
+.jd-preview-dialog__close:focus-visible {
+  outline: 3px solid rgba(162, 132, 106, .52);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .jd-button:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+
+  .jd-button--secondary:hover {
+    border-color: var(--jd-accent-brown);
+  }
+
+  .jd-choice-card:not(:disabled):hover {
+    transform: translateY(-2px);
+    border-color: rgba(162, 132, 106, .56);
+    box-shadow: 0 12px 28px rgba(63, 47, 35, .07);
+  }
+
+  .jd-material-tile:hover {
+    transform: translateY(-2px);
+    border-color: rgba(162, 132, 106, .56);
+  }
+}
+
+@media (max-width: 560px) {
+  .jd-section {
+    width: min(100% - 24px, 1120px);
+  }
+
+  .jd-paper {
+    border-radius: 24px;
+  }
+
+  .jd-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jd-choice-card {
+    min-height: 116px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Report layout. Brand tokens are supplied by Jiandun Web Foundation. */
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:64px}body{margin:0;background:var(--jd-bg);color:var(--jd-text-primary);font:14px/1.85 'PingFang SC','Microsoft YaHei','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased}h1,h2,h3,p,blockquote,figure,dl,dd{margin:0}a{color:inherit;text-decoration:none}button{font:inherit}a,button,summary{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--jd-accent-brown);outline-offset:5px}::selection{background:#e6d9c7}.wrap{width:min(1120px,calc(100% - 96px));margin-inline:auto}.site-head{display:flex;align-items:center;justify-content:space-between;gap:20px;height:108px;border-bottom:1px solid var(--jd-line)}.brand{display:flex;align-items:center;gap:18px}.brand-name{font-size:26px;font-weight:650;letter-spacing:5px;line-height:1.4}.brand-label{border-left:1px solid var(--jd-line-strong);padding-left:18px;color:var(--jd-text-secondary);font-size:12px;letter-spacing:2px}.issue{color:var(--jd-text-muted);font-size:11px;letter-spacing:1.2px}.hero{padding:52px 0 48px;display:grid;grid-template-columns:1.32fr 1fr;align-items:center;gap:64px}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--jd-accent-brown);font-weight:500;margin-bottom:16px}.hero h1{font-size:48px;line-height:1.35;letter-spacing:-1.5px;font-weight:600}.hero-subtitle{font-size:15px;color:var(--jd-text-secondary);margin-top:18px;max-width:530px;line-height:1.9}.meta{display:grid;grid-template-columns:1fr 1fr;gap:24px 28px;padding:28px 32px;border:1px solid var(--jd-line);border-radius:28px;background:var(--jd-bg-card-soft)}.meta dt{font-size:11px;color:var(--jd-text-muted);letter-spacing:1px;margin-bottom:6px}.meta dd{font-size:14px;font-weight:500;line-height:1.6}.reading-nav{position:sticky;top:0;z-index:20;background:var(--jd-bg);border-top:1px solid var(--jd-line);border-bottom:1px solid var(--jd-line)}.reading-nav .wrap{display:flex;align-items:center;gap:32px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}.reading-nav a{min-height:58px;display:inline-flex;align-items:center;white-space:nowrap;font-size:12px;color:var(--jd-text-secondary);border-bottom:2px solid transparent;padding:0 2px;transition:color 200ms,border-color 200ms}.reading-nav a[aria-current=true]{color:var(--jd-text-primary);border-bottom-color:var(--jd-accent-brown)}.section{padding:72px 0;border-bottom:1px solid var(--jd-line);scroll-margin-top:0}.section-head{margin-bottom:32px}.section-head .kicker{font-size:11px;letter-spacing:2.4px;color:var(--jd-accent-brown);margin-bottom:12px}.section-head h2{font-size:30px;line-height:1.5;font-weight:600;letter-spacing:-.6px}.section-head .summary{font-size:14px;line-height:1.9;color:var(--jd-text-secondary);margin-top:12px;max-width:780px}.summary-section{padding-top:58px}.summary-section .section-head{display:grid;grid-template-columns:175px 1fr;align-items:start;margin-bottom:30px}.summary-section .kicker{padding-top:10px;margin:0}.summary-section h2{font-size:31px;line-height:1.6;max-width:830px}.conclusions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.conclusion{position:relative;border:1px solid var(--jd-line);background:white;border-radius:28px;padding:28px;min-width:0}.index-no{font-size:12px;letter-spacing:2px;color:var(--jd-accent-brown);margin-bottom:21px;display:block}.conclusion h3{font-size:19px;line-height:1.6;font-weight:550;margin-bottom:12px}.conclusion p{color:var(--jd-text-secondary);font-size:13px;line-height:1.95}.section-title-row{display:flex;justify-content:space-between;gap:20px;align-items:end}.section-context{font-size:12px;letter-spacing:1px;color:var(--jd-text-muted)}.actions-paper{padding:8px 32px;background:white;border:1px solid var(--jd-line);border-radius:28px}.action{display:grid;grid-template-columns:32px 1.55fr 1fr;gap:24px;padding:28px 0;align-items:start}.action+.action{border-top:1px solid var(--jd-line)}.action-number{font-size:12px;color:var(--jd-accent-brown);letter-spacing:1px;padding-top:3px}.action h3{font-size:18px;font-weight:550;line-height:1.6;margin-bottom:9px}.action p{color:var(--jd-text-secondary);font-size:13px;line-height:1.95}.action-result{border-left:1px solid var(--jd-line);padding-left:26px}.action-result span{display:block;font-size:11px;color:var(--jd-text-muted);margin-bottom:9px;letter-spacing:1px}.disclosure{margin-top:24px;border:1px solid var(--jd-line);border-radius:24px;background:var(--jd-bg-card-soft);overflow:hidden}.disclosure>summary{display:flex;align-items:center;gap:16px;min-height:72px;padding:19px 26px;cursor:pointer;list-style:none;font-size:14px;font-weight:500}.disclosure>summary::-webkit-details-marker{display:none}.disclosure>summary:after{content:'+';display:grid;place-items:center;margin-left:auto;flex:0 0 30px;width:30px;height:30px;border-radius:50%;border:1px solid var(--jd-line-strong);color:var(--jd-accent-brown);font-size:19px;font-weight:400;line-height:1}.disclosure[open]>summary:after{content:'−'}.disclosure-hint{font-size:11px;color:var(--jd-text-muted);font-weight:400;margin-left:8px}.disclosure-body{padding:0 26px 26px}.disclosure-body>.section{padding:10px 0 0;border:0}.disclosure-body .section-head{margin-bottom:22px}.disclosure-body .section-head h2{font-size:22px;line-height:1.6}.disclosure-body .section-head .kicker{display:none}.disclosure-body .section-head .summary{font-size:13px}.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.card{padding:26px;background:white;border:1px solid var(--jd-line);border-radius:24px}.card p{line-height:1.9}.card-title{font-size:14px;font-weight:550;margin-bottom:10px;color:var(--jd-text-primary)}.stack{display:grid;gap:16px}.product-panel{background:white;border-radius:28px;border:1px solid var(--jd-line);padding:28px 30px}.column-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:19px;border-bottom:1px solid var(--jd-line);font-size:18px;font-weight:550}.column-heading small{font-size:11px;color:var(--jd-text-muted);font-weight:400;letter-spacing:1px}.column-heading:before{content:'';width:7px;height:7px;background:var(--jd-accent-brown);border-radius:50%;flex:0 0 7px}.column-heading small{margin-left:auto}.product-stack{display:grid;gap:0}.product-card{border:0;border-bottom:1px solid var(--jd-line);padding:22px 0;border-radius:0;background:none}.product-card:last-child{border-bottom:0;padding-bottom:0}.product-card h3{font-size:15px;font-weight:550;margin-bottom:8px}.product-card p{font-size:13px;color:var(--jd-text-secondary);line-height:1.9}.service-plan{margin-top:24px;border:0;background:var(--jd-bg-warm);padding:28px 32px}.service-plan p{font-size:14px;color:var(--jd-text-secondary)}.service-plan .dash-list{display:flex;flex-wrap:wrap;gap:12px 28px;margin:16px 0 0}.dash-list{list-style:none;padding:0;margin:0}.dash-list li{position:relative;padding-left:16px;margin-top:16px;font-size:13px;color:var(--jd-text-secondary);line-height:1.95}.dash-list li:before{content:'';position:absolute;left:0;top:11px;width:5px;height:1px;background:var(--jd-accent-brown)}.service-plan .dash-list li{margin:0;font-size:12px}.truth{padding:32px;border-radius:28px;border:1px solid var(--jd-line);background:white;margin-bottom:24px}.panel-title{font-size:19px;line-height:1.6;font-weight:550;margin-bottom:24px}.truth .grid-2{gap:24px 40px}.truth h3{font-size:13px;font-weight:550;margin-bottom:7px}.truth p{font-size:13px;color:var(--jd-text-secondary);line-height:1.95}.truth .grid-2>div{padding-top:20px;border-top:1px solid var(--jd-line)}.truth .panel-title{display:flex;align-items:center;justify-content:space-between}.truth .panel-title:after{content:'访谈观察';font-size:11px;font-weight:400;color:var(--jd-text-muted);letter-spacing:1px}.strategy{padding:30px}.strategy .panel-title{font-size:18px;margin-bottom:18px}.strategy .dash-list li{margin-top:18px}.business{margin-top:24px;padding:30px}.business .dash-list{gap:30px}.business .dash-list li{margin:0}.business .panel-title{margin-bottom:20px}.data-source{font-size:11px;color:var(--jd-text-muted);margin-top:14px}.cooperation .card{padding:24px;background:white}.tag{display:block;font-size:14px;font-weight:550;color:var(--jd-text-primary);margin-bottom:16px}.circle-list{list-style:none;padding:0;margin:0}.circle-list li{font-size:12px;color:var(--jd-text-secondary);line-height:1.9;padding-left:12px;position:relative;margin-top:12px}.circle-list li:before{content:'';position:absolute;left:0;top:10px;width:3px;height:3px;border-radius:50%;background:var(--jd-accent-gold)}.background-overview{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:center;padding:36px;background:var(--jd-bg-warm);border-radius:28px}.background-overview h3{font-size:20px;line-height:1.6;font-weight:550;margin-bottom:14px}.background-overview p{font-size:13px;color:var(--jd-text-secondary);line-height:1.95}.background-overview .path{font-size:15px;color:var(--jd-text-primary);margin-bottom:9px}.background-overview>div+div{padding-left:36px;border-left:1px solid var(--jd-line-strong)}.profile{display:grid;grid-template-columns:.8fr 1.2fr;gap:24px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--jd-line);border:1px solid var(--jd-line);border-radius:24px;overflow:hidden;align-self:start}.stat{padding:25px 20px;background:white}.stat strong{font-size:30px;font-weight:500;line-height:1.3;letter-spacing:-1px}.unit{font-size:13px;color:var(--jd-text-secondary);margin-left:2px}.stat p{font-size:11px;color:var(--jd-text-muted);margin-top:5px}.profile .card p{font-size:13px;color:var(--jd-text-secondary)}.philosophy{text-align:center;padding:35px;margin-bottom:24px;background:white}.philosophy .kicker{font-size:11px;color:var(--jd-accent-brown);letter-spacing:4px}.philosophy h3{font-size:25px;font-weight:550;margin:14px 0}.philosophy p{font-size:13px;color:var(--jd-text-secondary)}.material{padding:20px}.material .symbol{font-size:18px;color:var(--jd-accent-brown);display:block;margin-bottom:12px}.material p{font-size:12px;color:var(--jd-text-secondary)}.callout{border-left:2px solid var(--jd-accent-gold);padding:18px 22px;margin-top:24px;background:var(--jd-bg-warm);border-radius:0 20px 20px 0}.callout p{font-size:13px;color:var(--jd-text-secondary)}.timeline{padding-left:30px;position:relative}.timeline:before{content:'';position:absolute;left:5px;top:9px;bottom:14px;width:1px;background:var(--jd-line-strong)}.timeline-item{position:relative;padding-bottom:28px}.timeline-item:last-child{padding-bottom:0}.timeline-item:before{content:'';position:absolute;left:-29px;top:9px;width:8px;height:8px;border:2px solid var(--jd-bg-card-soft);border-radius:50%;background:var(--jd-accent-brown);outline:1px solid var(--jd-accent-gold)}.timeline .label{font-size:11px;color:var(--jd-accent-brown);margin-bottom:6px}.timeline h3{font-size:15px;font-weight:550;margin-bottom:7px}.timeline p{font-size:13px;color:var(--jd-text-secondary)}.budget{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}.budget dt{font-size:11px;color:var(--jd-text-muted);margin-bottom:7px}.budget strong{font-size:24px;font-weight:500}.background-details .section+.section{margin-top:34px;padding-top:30px;border-top:1px solid var(--jd-line)}.quotes{padding:72px 0}.quote-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.quote-card{padding:26px;background:white;border:1px solid var(--jd-line);border-radius:24px;position:relative}.quote-card h3{font-size:11px;letter-spacing:1.6px;color:var(--jd-accent-brown);font-weight:400;margin-bottom:14px}.quote-card blockquote{font-size:14px;line-height:1.95;font-weight:400;color:var(--jd-text-secondary)}.quote-card:first-child{grid-column:1/-1;background:var(--jd-bg-warm);border:0;padding:36px 44px;display:grid;grid-template-columns:150px 1fr;gap:24px;align-items:center}.quote-card:first-child h3{margin:0}.quote-card:first-child blockquote{font-size:26px;color:var(--jd-text-primary);font-weight:500;letter-spacing:-.3px;line-height:1.6}.insight-card{padding:24px}.insight-label{font-size:10px;letter-spacing:2px;color:var(--jd-accent-brown);margin-bottom:12px}.insight-card p{font-size:12px;line-height:1.95;color:var(--jd-text-secondary)}.insight-card strong{color:var(--jd-text-primary);font-weight:550}.footer{padding:30px 0 44px;border-top:1px solid var(--jd-line);display:flex;align-items:center;justify-content:space-between;gap:24px}.footer-brand{font-size:18px;font-weight:600;letter-spacing:4px}.footer-note{font-size:11px;color:var(--jd-text-muted);margin-top:6px;letter-spacing:.5px}.footer-actions{display:flex;align-items:center;gap:20px;font-size:12px;color:var(--jd-text-secondary)}.print-button,.footer-action{display:inline-flex;align-items:center;min-height:44px;border:0;background:none;padding:0;cursor:pointer;font-size:12px;color:inherit}.top-link{position:fixed;right:22px;bottom:22px;display:grid;place-items:center;width:44px;height:44px;border-radius:16px;border:1px solid var(--jd-line-strong);background:var(--jd-bg-card);color:var(--jd-accent-brown);font-size:18px;z-index:25}.skip-link{position:fixed;left:20px;top:-100px;z-index:100;padding:12px 20px;background:var(--jd-text-primary);color:white;border-radius:16px}.skip-link:focus{top:16px}.mobile-only{display:none}
+@media(hover:hover){.reading-nav a:hover{color:var(--jd-text-primary);border-color:var(--jd-accent-gold)}.disclosure>summary:hover{background:#f0eee8}.top-link:hover{border-color:var(--jd-accent-brown)}.footer-action:hover,.print-button:hover{text-decoration:underline;text-underline-offset:5px}}
+@media(max-width:1000px){.wrap{width:calc(100% - 64px)}.hero{gap:32px;grid-template-columns:1.1fr 1fr}.hero h1{font-size:40px}.meta{padding:24px;gap:20px}.summary-section .section-head{grid-template-columns:130px 1fr}.summary-section h2{font-size:28px}.conclusion{padding:24px}.conclusion h3{font-size:17px}.action{grid-template-columns:24px 1.5fr 1fr;gap:18px}.quote-grid{grid-template-columns:1fr 1fr}.grid-4{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){html{scroll-padding-top:58px}.wrap{width:calc(100% - 40px)}.site-head{height:82px}.brand-name{font-size:23px;letter-spacing:4px}.brand-label{font-size:10px;letter-spacing:1px;padding-left:12px}.brand{gap:12px}.issue{font-size:10px}.hero{grid-template-columns:1fr;padding:32px 0;gap:26px}.hero h1{font-size:36px;letter-spacing:-1px}.hero-subtitle{font-size:14px;margin-top:14px}.eyebrow{font-size:11px;margin-bottom:12px}.meta{padding:22px 24px;border-radius:24px;gap:20px 24px}.meta dt{font-size:10px}.meta dd{font-size:13px}.reading-nav .wrap{gap:24px}.reading-nav a{min-height:52px;font-size:11px}.section{padding:44px 0}.section-head{margin-bottom:24px}.section-head h2{font-size:25px}.section-head .kicker{font-size:10px;letter-spacing:1.7px;margin-bottom:11px}.summary-section .section-head{display:block}.summary-section .kicker{padding-top:0;margin-bottom:12px}.summary-section h2{font-size:26px;line-height:1.65}.conclusions{grid-template-columns:1fr;gap:14px}.conclusion{padding:24px;display:grid;grid-template-columns:28px 1fr;gap:4px 16px;border-radius:24px}.conclusion .index-no{grid-row:1/3;margin:5px 0 0;font-size:11px}.conclusion h3{font-size:18px;margin-bottom:7px}.conclusion p{font-size:13px}.section-title-row{align-items:start;flex-direction:column;gap:10px}.section-context{font-size:11px}.actions-paper{padding:0 22px;border-radius:24px}.action{grid-template-columns:24px 1fr;gap:10px 12px;padding:24px 0}.action h3{font-size:17px}.action p{font-size:13px}.action-result{grid-column:2;padding:14px 0 0;border-left:0;border-top:1px solid var(--jd-line)}.action-result span{font-size:10px;margin-bottom:5px}.grid-2,.grid-3,.profile{grid-template-columns:1fr;gap:16px}.grid-4{gap:12px}.card{padding:22px;border-radius:22px}.product-panel{padding:24px;border-radius:24px}.column-heading{font-size:17px}.product-card{padding:20px 0;border-radius:0}.product-card h3{font-size:15px}.product-card p{font-size:13px}.service-plan{padding:24px}.service-plan .dash-list{display:block;margin-top:12px}.service-plan .dash-list li{margin-top:7px}.truth{padding:24px;border-radius:24px}.truth .grid-2{gap:20px}.truth .panel-title{font-size:18px;margin-bottom:4px}.truth .grid-2>div{padding-top:18px}.truth h3{font-size:13px}.strategy,.business{padding:24px}.business .dash-list{gap:18px}.disclosure{border-radius:22px;margin-top:20px}.disclosure>summary{padding:18px 22px;min-height:68px;font-size:13px;flex-wrap:wrap;gap:4px 12px;position:relative;padding-right:60px}.disclosure>summary:after{position:absolute;right:20px;top:19px}.disclosure-hint{display:block;width:100%;font-size:10px;margin-left:0}.disclosure-body{padding:0 20px 20px}.disclosure-body .section-head h2{font-size:21px}.cooperation .card{padding:21px}.background-overview{grid-template-columns:1fr;gap:24px;padding:26px;border-radius:24px}.background-overview>div+div{padding:22px 0 0;border-left:0;border-top:1px solid var(--jd-line-strong)}.background-overview h3{font-size:19px}.background-overview .path{font-size:14px}.stats{border-radius:22px}.stat strong{font-size:29px}.stat{padding:22px}.philosophy{padding:28px 20px}.philosophy h3{font-size:23px}.material{padding:18px}.material p{font-size:12px}.callout{padding:18px}.budget{gap:12px}.budget strong{font-size:23px}.quotes{padding:44px 0}.quote-grid{grid-template-columns:1fr;gap:14px}.quote-card{padding:24px;border-radius:22px}.quote-card:first-child{display:block;padding:28px}.quote-card:first-child h3{margin-bottom:18px}.quote-card:first-child blockquote{font-size:23px;line-height:1.7}.quote-card blockquote{font-size:14px}.footer{padding:26px 0 30px;align-items:start;flex-direction:column;gap:12px}.footer-actions{gap:26px}.top-link{right:14px;bottom:14px}.insight-card{padding:22px}.section-head .summary{font-size:13px}.section-context{display:none}}
+@media(max-width:360px){.wrap{width:calc(100% - 32px)}.hero h1{font-size:32px}.brand-label{display:none}.summary-section h2{font-size:23px}.conclusion{padding:22px;gap:4px 12px}.conclusion h3{font-size:16px}.grid-4{grid-template-columns:1fr}.meta{padding:20px;gap:18px 12px}.meta dd{font-size:12px}.product-panel{padding:22px}.action h3{font-size:16px}.budget{grid-template-columns:1fr;gap:20px}}
+@media print{body{background:#fff;font-size:12px}.wrap{width:100%;max-width:none}.reading-nav,.top-link,.footer-actions,.skip-link{display:none}.hero{padding:25px 0;grid-template-columns:1fr 1fr}.hero h1{font-size:30px}.section,.quotes{padding:30px 0}.summary-section h2{font-size:25px}.conclusion,.action,.product-card,.quote-card,.insight-card{break-inside:avoid}.disclosure{border:0}.disclosure>summary:after{display:none}.disclosure-body{padding:0}.section-head h2{font-size:24px}.meta{padding:20px}.quote-card:first-child blockquote{font-size:22px}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body class="jd-page"><a class="skip-link" href="#summary">跳到核心结论</a><div class="wrap" id="top"><header class="site-head"><a class="brand" href="#top" aria-label="简顿灯具 回到顶部"><span class="brand-name">简顿</span><span class="brand-label">灯光与生活</span></a><span class="issue">入户回访 / 02</span></header><section class="hero" aria-labelledby="page-title"><div><p class="eyebrow">用户研究 · 杭州</p><h1 id="page-title">杭州入户回访</h1><p class="hero-subtitle">一对设计师夫妻的选灯路径与居住体验</p></div><dl class="meta"><div><dt>回访日期</dt><dd>2026 年 9 月 18 日</dd></div><div><dt>访谈时长</dt><dd>2 小时 04 分</dd></div><div><dt>受访对象</dt><dd>室内设计师业主</dd></div><div><dt>住宅背景</dt><dd>120㎡ · 轻侘寂风</dd></div></dl></section></div><nav class="reading-nav" aria-label="报告目录"><div class="wrap"><a href="#summary">核心结论</a><a href="#actions">后续行动</a><a href="#products">产品体验</a><a href="#services">服务洞察</a><a href="#background">业主与空间</a><a href="#quotes">业主原声</a></div></nav><main class="wrap"><section class="section summary-section" id="summary"><header class="section-head"><p class="kicker">01 / 核心结论</p><h2>审美与智能体验获得认可<br>防眩与安装细节仍需完善</h2></header><div class="conclusions"><article class="conclusion"><span class="index-no">01</span><h3>审美契合，购买决策快</h3><p>业主通过小红书找到极窄框射灯，对比色卡后直接下单，未比较其他品牌。墙漆同色、浅埋深与一站式配齐促成购买。</p></article><article class="conclusion"><span class="index-no">02</span><h3>整体满意，细节仍需完善</h3><p>缓亮缓灭、米家适配与同色配套获认可；反馈集中在防眩、小开孔及品类缺口、安装碰漆与早期色号偏差。</p></article><article class="conclusion"><span class="index-no">03</span><h3>服务要落到居住场景</h3><p>访谈提出：家装服务围绕回家、会客、观影等场景展开，打包常用智能灯光方案；工装更关注价格、采购与安装效率。</p></article></div></section><section class="section" id="actions"><header class="section-head"><p class="kicker">02 / 后续行动</p><h2>四项后续行动</h2></header><div class="actions-paper"><article class="action"><span class="action-number">01</span><div><h3>完成射灯升级与安装</h3><p>按回访约定寄送五代 Pro 防眩射灯，匹配现有墙漆色号并提供免费上门安装；同步跟进弹簧卡子碰漆问题。</p></div><div class="action-result"><span>跟进结果</span><p>跟进更换安装、防眩效果与漆面保护</p></div></article><article class="action"><span class="action-number">02</span><div><h3>跟进规格与新品需求</h3><p>评估 55mm 及更小开孔射灯、象鼻灯、免布线壁灯、低瓦数内嵌灯带等需求，并向业主反馈评估进展。</p></div><div class="action-result"><span>跟进结果</span><p>明确各项需求的评估结论与反馈节点</p></div></article><article class="action"><span class="action-number">03</span><div><h3>完成实景回访与内容合作</h3><p>待家具、窗帘配齐后再次回访，拍摄完整落地素材；结合业主家居摄影账号，提供内容方向与起号支持。</p></div><div class="action-result"><span>跟进结果</span><p>形成完整实景素材，推进账号内容合作</p></div></article><article class="action"><span class="action-number">04</span><div><h3>尝试打包智能灯光场景</h3><p>围绕回家、会客、观影等居家场景组织服务，尝试将常用智能灯光方案打包交付，减少用户自行调试。</p></div><div class="action-result"><span>跟进结果</span><p>提供可直接使用的场景方案</p></div></article></div><details class="disclosure" id="cooperation-detail"><summary><span>合作计划</span><span class="disclosure-hint">产品迭代 · 内容合作 · 长期关系</span></summary><div class="disclosure-body"><section class="section cooperation" id="cooperation">
+
+<div class="grid-3">
+<article class="card">
+<span class="tag">产品迭代</span>
+<ul class="circle-list">
+<li>升级款射灯寄送：五代 Pro 防眩射灯，匹配墙漆色号，免费上门安装</li>
+<li>新品需求评估：红/蓝洞石台灯、小开孔射灯、象鼻灯等纳入产品线规划</li>
+<li>安装流程优化：弹簧卡子磕碰漆面问题，同步优化安装师傅操作规范</li>
+</ul>
+</article>
+<article class="card">
+<span class="tag">内容合作</span>
+<ul class="circle-list">
+<li>账号运营支持：业主运营家居/摄影类小红书，品牌方提供内容方向与起号指导</li>
+<li>产品支持机制：业主后续灯具更换/添置需求，品牌方免费提供，业主反馈实景内容</li>
+<li>线下门店参考：业主家松弛感侘寂风设计，作为上海、杭州门店核心参考方向之一</li>
+</ul>
+</article>
+<article class="card">
+<span class="tag">长期合作</span>
+<ul class="circle-list">
+<li>回访约定：家具窗帘全部配齐后，再次上门回访并拍摄完整落地素材</li>
+<li>创始人对接：安排创始人与业主就侘寂风设计、产品研发进行深度交流</li>
+<li>设计合作：若创始人有别墅装修需求，业主提供免费室内设计服务</li>
+</ul>
+</article>
+</div>
+</section></div></details></section><section class="section" id="products">
+<header class="section-head"><p class="kicker">03 / 产品体验</p><h2>产品亮点与待优化项</h2></header>
+<div class="grid-2">
+<div class="product-panel">
+<div class="column-heading">获得认可<small>06 项反馈</small></div>
+<div class="product-stack">
+<article class="card product-card">
+<h3>窄边框深杯造型</h3>
+<p>符合极简审美，可定制的墙漆同色款与业主家艺术漆色调高度契合，无突兀感。</p>
+</article>
+<article class="card product-card">
+<h3>智能功能体验</h3>
+<p>全系标配缓启缓灭功能，避免灯光骤亮骤灭的不适感；适配米家系统运行稳定，无断连、bug 等问题。</p>
+</article>
+<article class="card product-card">
+<h3>配套服务灵活</h3>
+<p>支持后期加装智能模块、同色系窄轨道配套，满足中途调整智能配置、全屋同品牌配齐的需求。</p>
+</article>
+<article class="card product-card">
+<h3>色温选择合理</h3>
+<p>主推的 3500K 色温偏暖调，符合居家松弛感的氛围需求，避免了普通精装修 4000K 冷白光的"上班感"。</p>
+</article>
+<article class="card product-card">
+<h3>口碑验证</h3>
+<p>产品虽存在少量小红书负面评价，但实际落地效果符合预期；即便是对细节要求极高的设计师家属也表示满意。</p>
+</article>
+<article class="card product-card">
+<h3>智能适配灵活</h3>
+<p>支持米家系统灵活接入，用户无需依赖专业智能团队，即可自行完成全屋智能场景的搭建。</p>
+</article>
+</div>
+</div>
+<div class="product-panel">
+<div class="column-heading">需要改进<small>05 项反馈</small></div>
+<div class="product-stack">
+<article class="card product-card">
+<h3>射灯防眩效果不足</h3>
+<p>现有射灯盯视易产生刺眼感，虽金属灯杯散热逻辑合理，但长时间观看仍存在眼部不适。</p>
+</article>
+<article class="card product-card">
+<h3>开孔规格覆盖有限</h3>
+<p>当前主推 75mm 开孔款，缺少 55mm 及更小开孔的高光束角射灯，无法满足局部精致照明需求。</p>
+</article>
+<article class="card product-card">
+<h3>产品线覆盖不全</h3>
+<p>暂无可调角象鼻灯、免布线壁灯、低瓦数内嵌灯带等产品，无法覆盖全场景照明需求。</p>
+</article>
+<article class="card product-card">
+<h3>安装细节待完善</h3>
+<p>灯具安装时弹簧卡子易磕碰掉金属灯杯表面漆面，对定制漆面、艺术漆墙面的用户友好度较低。</p>
+</article>
+<article class="card product-card">
+<h3>色号匹配度</h3>
+<p>早期可可蛋奶色号偏粉，与实际墙漆色卡存在色差；当前迭代版本已调整为偏灰调，适配性提升。</p>
+</article>
+</div>
+</div>
+</div>
+<aside class="card service-plan">
+<h3 class="card-title">产品升级计划</h3>
+<p>品牌方将为业主免费寄送迭代升级的五代 Pro 防眩射灯，匹配现有墙漆色号，提供免费上门安装服务。</p>
+<ul class="dash-list">
+<li>五代 Pro 加深杯身优化防眩</li>
+<li>筒灯更换透镜提升防眩</li>
+<li>灯具杯色调整更接近主流墙漆色调</li>
+</ul>
+</aside>
+</section><section class="section" id="services">
+<header class="section-head"><p class="kicker">04 / 服务洞察</p><h2>服务设计与渠道方向</h2></header>
+<div class="truth">
+<div aria-level="3" class="panel-title" role="heading">用户与市场</div>
+<div class="grid-2">
+<div>
+<h3>市场现状</h3>
+<p>杭州同时配备专业灯光设计与全屋智能的家装案例较少，属于相对少见的家装配置类型。</p>
+</div>
+<div>
+<h3>预算心态</h3>
+<p>装修后期灯具预算普遍紧张，多数人灯具选购心理预期价位在百元左右，消费者仅会为超高颜值接受溢价。</p>
+</div>
+<div>
+<h3>工装用户关注点</h3>
+<p>工装工地场景下用户大多不关注造价，核心在意灯具价格是否低廉、采购是否方便、安装是否便捷快速。</p>
+</div>
+<div>
+<h3>核心用户区域</h3>
+<p>当前 80% 以上用户集中在江浙沪区域，该区域用户更愿意为审美、氛围买单，对价格敏感度较低。</p>
+</div>
+</div>
+</div>
+<div class="grid-2">
+<article class="card strategy">
+<h3 class="panel-title">普通用户服务策略</h3>
+<ul class="dash-list">
+<li>现有服务足够支撑需求：点位配置、回路规划、配单服务已完全满足普通家装用户的基础需求</li>
+<li>放弃非必要专业输出：无需向普通用户输出照度图、光束角参数等专业内容，多数用户无法理解也无法感知其价值</li>
+<li>尊重用户自主需求：若用户本身有明确的点位、灯具偏好，优先尊重用户的既定方案</li>
+</ul>
+</article>
+<article class="card strategy">
+<h3 class="panel-title">深度场景化设计</h3>
+<ul class="dash-list">
+<li>以真实案例为核心载体：优先展示用户落地实景案例，比材质、参数说明更能打动普通家装用户</li>
+<li>输出场景化氛围建议：针对回家、会客、观影、美食制作等不同居家场景，提供专属灯光搭配建议</li>
+<li>打包智能场景方案：将常用智能灯光场景直接打包提供，避免用户自行调试的麻烦</li>
+<li>强化情绪价值传递：重点突出灯光是空间唯一可调动情绪的软性元素</li>
+</ul>
+</article>
+</div>
+<article class="card business">
+<h3 class="panel-title">业务拓展方向</h3>
+<ul class="dash-list grid-3">
+<li>核心用户群体：80% 以上用户集中在江浙沪区域，更愿意为审美、氛围买单，价格敏感度低</li>
+<li>线下门店布局：优先在上海、杭州开设场景化线下门店，匹配核心用户地域分布</li>
+<li>竞品差异化定位：区别于高端品牌只接大平层/工装订单的定位，深耕普通家庭用户需求</li>
+</ul>
+</article>
+<p class="data-source">江浙沪用户占比为访谈口径</p><details class="disclosure"><summary><span>团队启示</span><span class="disclosure-hint">产品 · 内容 · 服务 · 渠道</span></summary><div class="disclosure-body"><section class="section source-insights" id="insights">
+<div class="grid-3">
+<article class="card insight-card">
+<p class="insight-label">INSIGHT 01</p>
+<p><strong>信任用户审美。</strong>业主家是"怕麻烦型用户 + 室内设计师身份"叠加，决策路径短，一旦认可会主动背书给同行。</p>
+</article>
+<article class="card insight-card">
+<p class="insight-label">INSIGHT 02</p>
+<p><strong>产品反馈要闭环。</strong>现场提出的 4 类产品痛点（防眩、小开孔、象鼻灯、壁灯）已纳入产品线评估，需在回访后给出明确反馈节点。</p>
+</article>
+<article class="card insight-card">
+<p class="insight-label">INSIGHT 03</p>
+<p><strong>内容资产要沉淀。</strong>业主答应做家居博主 + 提供实景落地内容，这是难得的"专业用户 × 真实场景"组合，需指定专人对接。</p>
+</article>
+<article class="card insight-card">
+<p class="insight-label">INSIGHT 04</p>
+<p><strong>线下门店选址有依据。</strong>江浙沪占 80% 用户，优先上海、杭州，业主家可作为杭州门店的参考样板。</p>
+</article>
+<article class="card insight-card">
+<p class="insight-label">INSIGHT 05</p>
+<p><strong>服务设计要分人群。</strong>普通家装用户重场景化氛围建议，工装用户重效率与可控成本，输出内容应有明确人群分流。</p>
+</article>
+<article class="card insight-card">
+<p class="insight-label">INSIGHT 06</p>
+<p><strong>服务边界要清晰。</strong>放弃照度图等专业输出，把智能场景打包化，才能让用户感知到设计付费的价值。</p>
+</article>
+</div>
+</section></div></details></section><section class="section" id="background"><header class="section-head"><p class="kicker">05 / 业主与空间</p><h2>业主画像与选购路径</h2></header><div class="background-overview"><div><h3>120㎡，一处轻侘寂风的家</h3><p>室内设计师夫妻将杭州近郊的精装房全部拆改，以洞石、艺术漆和暖光，营造与样板房不同的松弛感。回访时已入住 20 天。</p></div><div><h3>认准后购买，希望一次配齐</h3><p class="path">小红书搜索 → 色卡对比 → 下单</p><p>灯具预算 1 万元 · 单灯心理价位 100–300 元<br>未进行同类品牌比较</p></div></div><details class="disclosure background-details" id="background-detail"><summary><span>查看业主与空间</span><span class="disclosure-hint">业主画像 · 空间设计 · 选购路径</span></summary><div class="disclosure-body"><section class="section" id="profile">
+<header class="section-head"><h2>业主与房屋画像</h2><p class="summary">一对室内设计师夫妻，将杭州近郊 120㎡ 精装房全部拆改，打造属于自己的松弛感居所。</p></header>
+<div class="profile"><div class="stats"><div class="stat"><strong>120</strong><span class="unit">㎡</span><p>建筑面积</p></div><div class="stat"><strong>95</strong><span class="unit">㎡</span><p>套内面积</p></div><div class="stat"><strong>2.4</strong><span class="unit">m</span><p>吊顶后层高</p></div><div class="stat"><strong>20</strong><span class="unit">天</span><p>已入住时长</p></div></div>
+<div class="stack"><div class="card"><h3 class="card-title">房屋概况</h3><p>杭州非核心板块，开发商精装修交付现房。因原装修标准与业主过往负责的武汉公装项目完全一致，业主无法接受工作场景复刻，全部拆改重装。</p></div><div class="card"><h3 class="card-title">居住成员</h3><p>业主夫妻均为室内设计师，2019 年入行，深耕六七年，主营地产相关设计（售楼处、样板房、酒店等）。父母居住在相邻户型。</p></div><div class="card"><h3 class="card-title">入住状态</h3><p>已入住 20 天，窗帘、部分家具未配齐；计划双十一期间采购罗马帘，整体处于半完善状态。</p></div></div></div></section>
+<section class="section" id="design"><header class="section-head"><h2>装修设计理念</h2><p class="summary">不愿把工作的紧绷感带回家，要与样板房彻底相反的松弛空间。</p></header>
+<div class="card philosophy"><p class="kicker">核心追求</p><h3>居家松弛感</h3><p>参考谢科野奢酒店、川西山下品牌酒店的设计逻辑，呈现轻侘寂风效果</p></div>
+<div class="grid-4"><div class="card material"><span class="symbol">石</span><p>全屋大面积使用两种规格洞石，奠定侘寂风质感基调</p></div><div class="card material"><span class="symbol">漆</span><p>烟润浩渺色艺术漆，配合灯具色调全屋协调</p></div><div class="card material"><span class="symbol">线</span><p>未做踢脚线，窗套采用脱缝错层设计</p></div><div class="card material"><span class="symbol">构</span><p>拆除小卧室及厨房隔墙，厨房外移，改造为客餐厅延伸空间</p></div></div>
+<div class="callout"><h3 class="card-title">施工坚持</h3><p>灯槽预留仅 6 公分，远低于行业常规 12-20 公分的标准。施工阶段遭各工种工人集体质疑，业主仍坚持落地。夫妻二人均为室内设计师，整体方案由业主主导方向，局部细节（如餐吊灯款式）由双方共同协商确定。</p></div></section>
+<section class="section" id="journey"><header class="section-head"><h2>选购决策路径</h2><p class="summary">典型的怕麻烦型用户——认准目标后直接下单，不做竞品对比。</p></header>
+<div class="timeline"><div class="timeline-item"><p class="label">需求产生</p><h3>怕麻烦，追求一站式配齐</h3><p>选定目标产品后不会对比其他竞品，优先选择可一站式配齐的品牌。不想选麻烦的石膏内嵌款，直接锁定极窄框浅埋深款式。</p></div><div class="timeline-item"><p class="label">渠道触达</p><h3>小红书搜索 → 色卡对比 → 直接下单</h3><p>通过小红书搜索窄边框非预埋射灯时接触到本品牌，对比色卡后直接下单，未咨询其他同类品牌。</p></div><div class="timeline-item"><p class="label">采购时间</p><h3>提前采购，周期早于多数用户</h3><p>去年 10 月即完成灯具下单，因装修中途停工 3 个月，灯具堆存至今年才完成安装。</p></div><div class="timeline-item"><p class="label">使用体验</p><h3>落地效果符合预期，无落差感</h3><p>极窄框深杯造型符合极简审美，可定制墙漆同色款与艺术漆色调高度契合。因灯的颜色特别喜欢，全屋墙漆都跟着调成了立邦烟润浩渺。</p></div></div>
+<dl class="card budget"><div><dt>预留预算</dt><dd><strong>1 万</strong><span class="unit"> 元</span></dd></div><div><dt>心理价位</dt><dd><strong>100–300</strong><span class="unit"> 元 / 单灯</span></dd></div></dl></section>
+</div></details></section></main><section class="quotes" id="quotes">
+<div class="wrap">
+<header class="section-head"><p class="kicker">06 / 业主原声</p><h2>访谈原声</h2></header>
+<div class="quote-grid">
+<article class="quote-card">
+<h3>松弛感</h3>
+<blockquote>我不想把工作的紧绷感带回家。</blockquote>
+</article>
+<article class="quote-card">
+<h3>怕麻烦</h3>
+<blockquote>我不想选麻烦的石膏内嵌款，看到极窄框浅埋深就直接定了。</blockquote>
+</article>
+<article class="quote-card">
+<h3>颜色匹配</h3>
+<blockquote>灯的颜色我特别喜欢，后来全屋墙漆都跟着调成了立邦烟润浩渺。</blockquote>
+</article>
+<article class="quote-card">
+<h3>自行手搓</h3>
+<blockquote>原本打算付费 2-4 万找米家智能团队搭建，后来家属嫌贵，我自己手搓完成，实际使用体验反而更顺手。</blockquote>
+</article>
+<article class="quote-card">
+<h3>产品认可</h3>
+<blockquote>缓亮缓灭护眼、色温亮度可调、窄轨道同色，连我老婆（也是设计师）都觉得没挑剔。</blockquote>
+</article>
+<article class="quote-card">
+<h3>情绪价值</h3>
+<blockquote>灯光是空间里唯一能调动情绪的软性元素，比硬装更能让人放松。</blockquote>
+</article>
+<article class="quote-card">
+<h3>门店期待</h3>
+<blockquote>线下门店能更好满足消费者对场景化体验的需求，杭州也该有一家。</blockquote>
+</article>
+</div>
+</div>
+</section><footer class="footer wrap"><div><p class="footer-brand">简顿灯具</p><p class="footer-note">杭州 · 入户回访 · 2026.09.18</p></div><div class="footer-actions"><a class="footer-action" href="#top">回到顶部 ↑</a><button class="print-button" type="button" id="print-report">打印 / 保存 PDF</button></div></footer><a class="top-link" href="#top" aria-label="回到顶部">↑</a><script>(()=>{'use strict';const navLinks=[...document.querySelectorAll('.reading-nav a')];const sections=navLinks.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);let scheduled=false;function updateActive(){scheduled=false;let active=sections[0];const boundary=window.scrollY+Math.min(220,window.innerHeight*.28);sections.forEach(s=>{if(s.offsetTop<=boundary)active=s;});navLinks.forEach(a=>{if(a.getAttribute('href')==='#'+active.id)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');});}function queueUpdate(){if(!scheduled){scheduled=true;requestAnimationFrame(updateActive);}}window.addEventListener('scroll',queueUpdate,{passive:true});window.addEventListener('resize',queueUpdate);queueUpdate();let closedForPrint=[];window.addEventListener('beforeprint',()=>{closedForPrint=[...document.querySelectorAll('details')].filter(d=>!d.open);closedForPrint.forEach(d=>d.open=true);});window.addEventListener('afterprint',()=>{closedForPrint.forEach(d=>d.open=false);closedForPrint=[];});document.getElementById('print-report').addEventListener('click',()=>window.print());})();</script></body></html>
